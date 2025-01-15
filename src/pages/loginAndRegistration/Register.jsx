@@ -1,12 +1,55 @@
 import { Button, FileInput, Label, TextInput } from "flowbite-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import useAuth from "../../hooks/useAuth";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
+import Swal from "sweetalert2";
 
+
+const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
+const image_hosting_api = `https://api.imgbb.com/1/upload?&key=${image_hosting_key}`;
 const Register = () => {
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const { createUser, updateUserProfile } = useAuth();
+    const axiosPublic = useAxiosPublic();
+    const navigate = useNavigate();
 
-    const onSubmit = (data) => {
-        console.log(data);
+    const { register, handleSubmit, formState: { errors } } = useForm();
+
+    const onSubmit = async (data) => {
+        // console.log(data);
+        const imageFile = { image: data.image[0] }
+        const res = await axiosPublic.post(image_hosting_api, imageFile, {
+            headers: {
+                'content-type': "multipart/form-data"
+            }
+        })
+        const photoUrl = res.data.data.display_url;
+        createUser(data.email, data.password)
+            .then(result => {
+                const loggedUser = result.user;
+                console.log(loggedUser)
+                updateUserProfile(data.name, photoUrl)
+                    .then(() => {
+                        const userInfo = {
+                            name: data.name,
+                            email: data.email
+                        }
+                        axiosPublic.post('/users', userInfo)
+                            .then(res => {
+                                if (res.data.insertedId) {
+                                    Swal.fire({
+                                        position: "top-end",
+                                        icon: "success",
+                                        title: "User Created Successfully",
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    });
+                                    navigate('/')
+                                }
+                            })
+                    })
+            })
+
     };
 
     return (
@@ -62,28 +105,14 @@ const Register = () => {
                     />
                     {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
                 </div>
-                <div>
-                    <div className="mb-2 block">
-                        <Label htmlFor="repeatPassword" value="Repeat Password" />
-                    </div>
-                    <TextInput
-                        id="repeatPassword"
-                        type="password"
-                        {...register("repeatPassword", {
-                            required: "Please confirm your password",
-                            validate: (value) => value === watch("password") || "Passwords do not match",
-                        })}
-                        shadow
-                    />
-                    {errors.repeatPassword && <p className="text-red-500 text-sm">{errors.repeatPassword.message}</p>}
-                </div>
+
                 <div>
                     <div className="mb-2 block">
                         <Label htmlFor="fileUpload" value="Upload Image" />
                     </div>
                     <FileInput
                         id="fileUpload"
-                        {...register("fileUpload")}
+                        {...register("image", { required: "File upload is required" })}
                     />
                     {errors.fileUpload && <p className="text-red-500 text-sm">{errors.fileUpload.message}</p>}
                 </div>
