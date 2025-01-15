@@ -4,6 +4,7 @@ import useActiveLink from "../../hooks/useActiveLink";
 
 import logo from '../../assets/logo.png'
 import useAuth from "../../hooks/useAuth";
+import Swal from "sweetalert2";
 
 const NavBar = () => {
     const { user, logOut } = useAuth();
@@ -13,7 +14,13 @@ const NavBar = () => {
     const handleSignOut = () => {
         logOut()
             .then(() => {
-                console.log("logged Out")
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: `${user.displayName} logged out successfully`,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
             })
             .catch(error => console.log(error))
     }
