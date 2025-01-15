@@ -1,12 +1,32 @@
 import { Button, Label, TextInput } from "flowbite-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import useAuth from "../../hooks/useAuth";
+import Swal from "sweetalert2";
 
 const Login = () => {
+    const { signIn } = useAuth();
+
     const { register, handleSubmit, formState: { errors } } = useForm();
+
+    const navigate = useNavigate();
+    const location = useLocation()
+
+    const from = location.state?.from?.pathname || '/'
 
     const onSubmit = (data) => {
         console.log(data);
+        signIn(data.email, data.password)
+            .then(result => {
+                const user = result.user;
+                console.log(user)
+                Swal.fire({
+                    title: "Logged in successfully",
+                    icon: "success",
+                    draggable: true
+                });
+                navigate(from, { replace: true });
+            })
     };
 
     return (
@@ -22,7 +42,7 @@ const Login = () => {
                     <TextInput
                         id="email1"
                         type="email"
-                        placeholder="name@flowbite.com"
+                        placeholder="your email"
                         {...register("email", {
                             required: "Email is required",
 
@@ -39,6 +59,7 @@ const Login = () => {
                     <TextInput
                         id="password1"
                         type="password"
+                        placeholder="your password"
                         {...register("password", {
                             required: "Password is required",
                             minLength: {
@@ -51,11 +72,7 @@ const Login = () => {
                         <p className="text-red-500 text-sm">{errors.password.message}</p>
                     )}
                 </div>
-                {/* <div className="flex items-center gap-2">
-                    <Checkbox id="remember" {...register("remember")} />
-                    <Label htmlFor="remember">Remember me</Label>
-                </div> */}
-                <Button type="submit">Submit</Button>
+                <Button type="submit">Log In</Button>
             </form>
             <p className="font-semibold my-4">
                 Don’t Have An Account?{" "}

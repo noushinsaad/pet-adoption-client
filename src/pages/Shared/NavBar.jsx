@@ -3,12 +3,20 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import useActiveLink from "../../hooks/useActiveLink";
 
 import logo from '../../assets/logo.png'
-import { useState } from "react";
+import useAuth from "../../hooks/useAuth";
 
 const NavBar = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const { user, logOut } = useAuth();
     const location = useLocation();
     const noHeaderFooter = location.pathname.includes('login') || location.pathname.includes('register')
+
+    const handleSignOut = () => {
+        logOut()
+            .then(() => {
+                console.log("logged Out")
+            })
+            .catch(error => console.log(error))
+    }
 
     const links = (
         <>
@@ -35,30 +43,30 @@ const NavBar = () => {
 
             {
                 noHeaderFooter || <div className="flex md:order-2">
-                    {isLoggedIn ? (
+                    {user ? (
                         <Dropdown
-                            arrowIcon={false}
+                            arrowIcon={true}
                             inline
                             label={
                                 <Avatar
                                     alt="User settings"
-                                    img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                                    img={user.photoURL}
                                     rounded
                                 />
                             }
                         >
                             <Dropdown.Header>
-                                <span className="block text-sm">Bonnie Green</span>
-                                <span className="block truncate text-sm font-medium">name@flowbite.com</span>
+                                <span className="block text-sm">{user.displayName}</span>
+                                <span className="block truncate text-sm font-medium">{user.email}</span>
                             </Dropdown.Header>
                             <Dropdown.Item>Dashboard</Dropdown.Item>
                             <Dropdown.Item>Settings</Dropdown.Item>
                             <Dropdown.Item>Earnings</Dropdown.Item>
                             <Dropdown.Divider />
-                            <Dropdown.Item onClick={() => setIsLoggedIn(false)}>Sign out</Dropdown.Item>
+                            <Dropdown.Item onClick={handleSignOut}>Sign out</Dropdown.Item>
                         </Dropdown>
                     ) : (
-                        <Link to='/register'><Button>Login/Register</Button></Link>
+                        <Link to='/login'><Button>Login/Register</Button></Link>
                     )}
                     <Navbar.Toggle />
                 </div>
