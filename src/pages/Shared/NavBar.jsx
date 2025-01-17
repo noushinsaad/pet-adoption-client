@@ -42,7 +42,7 @@ const NavBar = () => {
 
     return (
 
-        <Navbar className="bg-green-200  md:px-10" fluid rounded>
+        <Navbar className="bg-green-200  md:px-10" fluid>
             <Navbar.Brand href="/">
                 <img src={logo} className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" />
                 <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">FurEver Home</span>

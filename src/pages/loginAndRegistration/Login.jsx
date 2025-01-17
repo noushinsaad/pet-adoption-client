@@ -37,7 +37,7 @@ const Login = () => {
     };
 
     return (
-        <div className="w-full md:w-1/2 lg:w-1/3 mx-auto bg-white border border-gray-200 shadow-lg p-8 rounded-lg">
+        <div className="my-8 w-full md:w-1/2 lg:w-1/3 mx-auto bg-white border border-gray-200 shadow-lg p-8 rounded-lg">
             <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Welcome Back!</h2>
             <p className="text-sm text-center text-gray-500 mb-4">
                 Log in to access your account and enjoy our services.

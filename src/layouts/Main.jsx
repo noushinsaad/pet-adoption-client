@@ -9,7 +9,7 @@ const Main = () => {
             <nav className="sticky top-0 z-50 shadow-md">
                 <NavBar></NavBar>
             </nav>
-            <main className="my-6 min-h-screen">
+            <main className="min-h-screen">
                 <Outlet></Outlet>
             </main>
             <footer>

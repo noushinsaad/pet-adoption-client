@@ -94,7 +94,7 @@ const Register = () => {
     // };
 
     return (
-        <div className="md:w-1/3 mx-auto bg-white shadow-lg p-6 rounded-lg">
+        <div className="my-8 md:w-1/3 mx-auto bg-white shadow-lg p-6 rounded-lg">
             <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
                 Create Your Account
             </h2>
