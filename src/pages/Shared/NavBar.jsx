@@ -66,7 +66,7 @@ const NavBar = () => {
                                 <span className="block text-sm">{user.displayName}</span>
                                 <span className="block truncate text-sm font-medium">{user.email}</span>
                             </Dropdown.Header>
-                            <Dropdown.Item>Dashboard</Dropdown.Item>
+                            <Dropdown.Item><Link to='/dashboard'>Dashboard</Link></Dropdown.Item>
                             <Dropdown.Item>Settings</Dropdown.Item>
                             <Dropdown.Item>Earnings</Dropdown.Item>
                             <Dropdown.Divider />

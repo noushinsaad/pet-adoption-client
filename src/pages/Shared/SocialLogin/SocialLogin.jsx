@@ -18,6 +18,7 @@ const SocialLogin = () => {
                 const userInfo = {
                     name: result.user?.displayName,
                     email: result.user?.email,
+                    photoUrl: result.user?.photoURL
                 }
                 axiosPublic.post('/users', userInfo)
                     .then(res => {
@@ -44,6 +45,14 @@ const SocialLogin = () => {
                         }
                     })
             })
+            .catch((error) => {
+                Swal.fire({
+                    title: "Error",
+                    text: error.message,
+                    icon: "error",
+                    timer: 3000,
+                });
+            });
     }
 
     const handleGithubSignIn = () => {
@@ -53,6 +62,7 @@ const SocialLogin = () => {
                 const userInfo = {
                     name: result.user?.displayName,
                     email: result.user?.email,
+                    photoUrl: result.user?.photoURL
                 }
                 axiosPublic.post('/users', userInfo)
                     .then(res => {

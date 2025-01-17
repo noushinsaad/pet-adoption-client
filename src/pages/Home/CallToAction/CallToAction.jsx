@@ -27,28 +27,28 @@ const CallToAction = () => {
                         <img
                             src={img1}
                             alt="Image 1"
-                            className="w-full h-full object-cover rounded-full shadow-lg"
+                            className="w-full h-full object-cover rounded-full rounded-br-none shadow-lg"
                         />
                     </div>
                     <div className="col-span-2 row-span-2">
                         <img
                             src={img2}
                             alt="Image 2"
-                            className="w-full h-full object-cover rounded-full shadow-lg"
+                            className="w-full h-full object-cover rounded-full rounded-bl-none shadow-lg"
                         />
                     </div>
                     <div className="col-span-2 row-span-2">
                         <img
                             src={img3}
                             alt="Image 3"
-                            className="w-full h-full object-cover rounded-full shadow-lg"
+                            className="w-full h-full object-cover rounded-full rounded-tr-none shadow-lg"
                         />
                     </div>
                     <div className="col-span-3 row-span-1">
                         <img
                             src={img4}
                             alt="Image 4"
-                            className="w-full h-full object-cover rounded-full shadow-lg"
+                            className="w-full h-full object-cover rounded-full rounded-tl-none shadow-lg"
                         />
                     </div>
                 </div>
