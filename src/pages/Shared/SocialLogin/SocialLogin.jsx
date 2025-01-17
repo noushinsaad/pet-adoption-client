@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 const SocialLogin = () => {
-    const { googleSignIn } = useAuth();
+    const { googleSignIn, gitHubSignIn } = useAuth();
     const axiosPublic = useAxiosPublic();
     const navigate = useNavigate()
 
@@ -47,7 +47,46 @@ const SocialLogin = () => {
     }
 
     const handleGithubSignIn = () => {
-        console.log("clicked github sign in button")
+        gitHubSignIn()
+            .then(result => {
+                console.log(result.user);
+                const userInfo = {
+                    name: result.user?.displayName,
+                    email: result.user?.email,
+                }
+                axiosPublic.post('/users', userInfo)
+                    .then(res => {
+                        console.log(res.data)
+                        if (res.data.insertedId) {
+                            Swal.fire({
+                                position: "top-end",
+                                icon: "success",
+                                title: `Created your account Successfully, ${result.user.displayName}`,
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                            navigate('/')
+                        }
+                        else {
+                            Swal.fire({
+                                position: "top-end",
+                                icon: "success",
+                                title: `${result.user.displayName} logged in Successfully`,
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                            navigate('/')
+                        }
+                    })
+            })
+            .catch((error) => {
+                Swal.fire({
+                    title: "Error",
+                    text: error.message,
+                    icon: "error",
+                    timer: 3000,
+                });
+            });
     }
 
     return (

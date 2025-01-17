@@ -50,6 +50,14 @@ const Register = () => {
                                 }
                             })
                     })
+                    .catch((error) => {
+                        Swal.fire({
+                            title: "Error",
+                            text: error.message,
+                            icon: "error",
+                            timer: 3000,
+                        });
+                    });
             })
 
     };
