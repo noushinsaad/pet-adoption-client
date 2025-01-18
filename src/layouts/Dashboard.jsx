@@ -7,7 +7,6 @@ import {
     HiCurrencyDollar,
     HiHeart,
     HiInformationCircle,
-    HiLogout,
     HiPencil,
     HiShoppingBag,
     HiUsers,
@@ -17,6 +16,7 @@ import { Outlet } from "react-router-dom";
 import useAdmin from "../hooks/useAdmin";
 import Swal from "sweetalert2";
 import useAuth from "../hooks/useAuth";
+import { MdSpaceDashboard } from "react-icons/md";
 
 const Dashboard = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -65,22 +65,22 @@ const Dashboard = () => {
                     <Sidebar.Item href="/dashboard/userHome" icon={HiHome}>
                         User Home
                     </Sidebar.Item>
-                    <Sidebar.Item href="/e-commerce/products" icon={HiShoppingBag}>
+                    <Sidebar.Item href="/dashboard/addPet" icon={HiShoppingBag}>
                         Add a Pet
                     </Sidebar.Item>
-                    <Sidebar.Item href="/users/list" icon={HiHeart}>
+                    <Sidebar.Item href="/dashboard/myAddedPets" icon={HiHeart}>
                         My Added Pets
                     </Sidebar.Item>
-                    <Sidebar.Item href="/authentication/sign-in" icon={HiClipboard}>
+                    <Sidebar.Item href="/dashboard/adoptionRequest" icon={HiClipboard}>
                         Adoption Request
                     </Sidebar.Item>
-                    <Sidebar.Item href="/authentication/sign-up" icon={HiPencil}>
+                    <Sidebar.Item href="/dashboard/createDonationCampaign" icon={HiPencil}>
                         Create Donation <br /> Campaign
                     </Sidebar.Item>
-                    <Sidebar.Item href="/authentication/sign-up" icon={HiClipboard}>
+                    <Sidebar.Item href="/dashboard/myDonationCampaign" icon={HiClipboard}>
                         My Donation <br /> Campaigns
                     </Sidebar.Item>
-                    <Sidebar.Item href="/authentication/sign-up" icon={HiCurrencyDollar}>
+                    <Sidebar.Item href="/dashboard/myDonations" icon={HiCurrencyDollar}>
                         My Donations
                     </Sidebar.Item>
                 </Sidebar.ItemGroup>
@@ -89,14 +89,14 @@ const Dashboard = () => {
                     <Sidebar.Item href="/" icon={HiHome}>
                         Home
                     </Sidebar.Item>
-                    <Sidebar.Item href="https://flowbite-react.com/" icon={HiCollection}>
+                    <Sidebar.Item href="/petListing" icon={HiCollection}>
                         Pet Listing
                     </Sidebar.Item>
-                    <Sidebar.Item href="https://github.com/themesberg/flowbite-react/issues" icon={HiInformationCircle}>
+                    <Sidebar.Item href="/donationCampaign" icon={HiInformationCircle}>
                         Donations Campaign
                     </Sidebar.Item>
                     <Sidebar.Item className="text-center">
-                        <Button onClick={handleSignOut} icon={HiLogout}>Log Out</Button>
+                        <Button onClick={handleSignOut}>Log Out</Button>
                     </Sidebar.Item>
                 </Sidebar.ItemGroup>
             </Sidebar.Items>
@@ -115,31 +115,31 @@ const Dashboard = () => {
                 </Sidebar>
             </div>
 
-            {/* Drawer for small devices */}
-            <div className="md:hidden">
-                <div className="p-4">
-                    <Button
-                        onClick={handleOpen}
-                        className="bg-green-600 text-white px-4 py-2 rounded-md font-medium hover:bg-green-700"
-                    >
-                        Open Menu
-                    </Button>
-                </div>
-                <Drawer open={isOpen} onClose={handleClose}>
-                    <Drawer.Header title="MENU" />
-                    <Drawer.Items>
-                        <Sidebar aria-label="Mobile sidebar">
-                            {links}
-                        </Sidebar>
-                    </Drawer.Items>
-                </Drawer>
+            {/* Content for smaller screens */}
+            <div className="md:hidden fixed top-4 left-4 z-50">
+                <Button
+                    onClick={handleOpen}
+                    className="bg-green-600 text-white rounded-md font-medium hover:bg-green-700"
+                >
+                    <MdSpaceDashboard className="text-3xl" />
+                </Button>
             </div>
 
-            {/* Content Placeholder */}
+            <Drawer open={isOpen} onClose={handleClose}>
+                <Drawer.Header title="MENU" />
+                <Drawer.Items>
+                    <Sidebar aria-label="Mobile sidebar">
+                        {links}
+                    </Sidebar>
+                </Drawer.Items>
+            </Drawer>
+
+            {/* Content Section */}
             <div className="flex-1 p-6">
-                <Outlet></Outlet>
+                <Outlet />
             </div>
         </div>
+
     );
 };
 

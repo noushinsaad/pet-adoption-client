@@ -15,7 +15,8 @@ const AllUsers = () => {
         },
     });
 
-    const handleMakeAdmin = user => {
+
+    const handleMakeAdmin = (user) => {
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -23,30 +24,28 @@ const AllUsers = () => {
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, Make Admin!"
+            confirmButtonText: "Yes, Make Admin!",
         }).then((result) => {
             if (result.isConfirmed) {
-                axiosSecure.patch(`/users/admin/${user._id}`)
-                    .then(res => {
-                        if (res.data.modifiedCount > 0) {
-                            refetch()
-                            Swal.fire({
-                                title: "Succeed",
-                                text: `${user.name} is a Admin Now`,
-                                icon: "success"
-                            });
-                        }
-                        else {
-                            Swal.fire({
-                                title: "Error",
-                                text: `error occurred`,
-                                icon: "error"
-                            });
-                        }
-                    })
+                axiosSecure.patch(`/users/admin/${user._id}`).then((res) => {
+                    if (res.data.modifiedCount > 0) {
+                        refetch();
+                        Swal.fire({
+                            title: "Success",
+                            text: `${user.name} is now an Admin.`,
+                            icon: "success",
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "Error",
+                            text: "An error occurred.",
+                            icon: "error",
+                        });
+                    }
+                });
             }
         });
-    }
+    };
 
     return (
         <div className="p-6">
@@ -81,14 +80,17 @@ const AllUsers = () => {
                                 <Table.Cell className="text-gray-700">{user.name}</Table.Cell>
                                 <Table.Cell className="text-gray-700">{user.email}</Table.Cell>
                                 <Table.Cell>
-                                    {user.role === 'admin' ? 'Admin' :
+                                    {user.role === "admin" ? (
+                                        "Admin"
+                                    ) : (
                                         <Button
                                             size="xs"
                                             onClick={() => handleMakeAdmin(user)}
                                             className="bg-cyan-600 hover:bg-cyan-700 text-white"
                                         >
                                             Make Admin
-                                        </Button>}
+                                        </Button>
+                                    )}
                                 </Table.Cell>
                             </Table.Row>
                         ))}
