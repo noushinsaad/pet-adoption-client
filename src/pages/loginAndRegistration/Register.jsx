@@ -49,6 +49,14 @@ const Register = () => {
                                     });
                                     navigate('/')
                                 }
+                                else {
+                                    Swal.fire({
+                                        title: "Error",
+                                        text: "already exist",
+                                        icon: "error",
+                                        timer: 3000,
+                                    });
+                                }
                             })
                     })
                     .catch((error) => {
@@ -148,7 +156,10 @@ const Register = () => {
                         placeholder="Create a password"
                         {...register("password", {
                             required: "Password is required",
-                            minLength: { value: 6, message: "Password must be at least 6 characters" },
+                            pattern: {
+                                value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,15}$/,
+                                message: "Password must be 6-15 characters, include at least one uppercase, one lowercase letter, and one number.",
+                            },
                         })}
                         shadow
                         className="mt-2"
@@ -157,6 +168,7 @@ const Register = () => {
                         <p className="text-red-500 text-sm">{errors.password.message}</p>
                     )}
                 </div>
+
                 <div>
                     <Label htmlFor="fileUpload" value="Upload Profile Picture" />
                     <FileInput

@@ -4,10 +4,12 @@ import useActiveLink from "../../hooks/useActiveLink";
 
 import logo from '../../assets/logo.png'
 import useAuth from "../../hooks/useAuth";
+import useAdmin from "../../hooks/useAdmin";
 import Swal from "sweetalert2";
 
 const NavBar = () => {
     const { user, logOut } = useAuth();
+    const [isAdmin] = useAdmin();
     const location = useLocation();
     const noHeaderFooter = location.pathname.includes('login') || location.pathname.includes('register')
 
@@ -66,7 +68,7 @@ const NavBar = () => {
                                 <span className="block text-sm">{user.displayName}</span>
                                 <span className="block truncate text-sm font-medium">{user.email}</span>
                             </Dropdown.Header>
-                            <Dropdown.Item><Link to='/dashboard'>Dashboard</Link></Dropdown.Item>
+                            <Dropdown.Item><Link to={isAdmin ? "/dashboard/adminHome" : "/dashboard/userHome"}>Dashboard</Link></Dropdown.Item>
                             <Dropdown.Item>Settings</Dropdown.Item>
                             <Dropdown.Item>Earnings</Dropdown.Item>
                             <Dropdown.Divider />

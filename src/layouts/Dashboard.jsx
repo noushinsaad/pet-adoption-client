@@ -7,43 +7,62 @@ import {
     HiCurrencyDollar,
     HiHeart,
     HiInformationCircle,
+    HiLogout,
     HiPencil,
     HiShoppingBag,
     HiUsers,
 } from "react-icons/hi";
 import { HiHome } from "react-icons/hi2";
 import { Outlet } from "react-router-dom";
+import useAdmin from "../hooks/useAdmin";
+import Swal from "sweetalert2";
+import useAuth from "../hooks/useAuth";
 
 const Dashboard = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const { user, logOut } = useAuth();
 
     const handleClose = () => setIsOpen(false);
     const handleOpen = () => setIsOpen(true);
 
-    const isAdmin = true;
+    const [isAdmin] = useAdmin();
+
+    const handleSignOut = () => {
+        logOut()
+            .then(() => {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: `${user.displayName} logged out successfully`,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            })
+            .catch(error => console.log(error))
+    }
 
     const links = (
         <>
             <Sidebar.Items>
                 {isAdmin && (
                     <Sidebar.ItemGroup>
-                        <Sidebar.Item href="/" icon={HiHome}>
+                        <Sidebar.Item href="/dashboard/adminHome" icon={HiHome}>
                             Admin Home
                         </Sidebar.Item>
                         <Sidebar.Item href="/dashboard/allUsers" icon={HiUsers}>
                             All Users
                         </Sidebar.Item>
-                        <Sidebar.Item href="/users/list" icon={HiHeart}>
+                        <Sidebar.Item href="/dashboard/allPets" icon={HiHeart}>
                             All Pets
                         </Sidebar.Item>
-                        <Sidebar.Item href="/users/list" icon={HiCurrencyDollar}>
+                        <Sidebar.Item href="/dashboard/allDonations" icon={HiCurrencyDollar}>
                             All Donations
                         </Sidebar.Item>
                     </Sidebar.ItemGroup>
                 )}
 
                 <Sidebar.ItemGroup>
-                    <Sidebar.Item href="/" icon={HiHome}>
+                    <Sidebar.Item href="/dashboard/userHome" icon={HiHome}>
                         User Home
                     </Sidebar.Item>
                     <Sidebar.Item href="/e-commerce/products" icon={HiShoppingBag}>
@@ -75,6 +94,9 @@ const Dashboard = () => {
                     </Sidebar.Item>
                     <Sidebar.Item href="https://github.com/themesberg/flowbite-react/issues" icon={HiInformationCircle}>
                         Donations Campaign
+                    </Sidebar.Item>
+                    <Sidebar.Item className="text-center">
+                        <Button onClick={handleSignOut} icon={HiLogout}>Log Out</Button>
                     </Sidebar.Item>
                 </Sidebar.ItemGroup>
             </Sidebar.Items>

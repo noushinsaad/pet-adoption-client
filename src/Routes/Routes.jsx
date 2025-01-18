@@ -9,6 +9,9 @@ import Login from "../pages/loginAndRegistration/Login";
 import Dashboard from "../layouts/Dashboard";
 import PrivateRoutes from "../Routes/PrivateRoutes"
 import AllUsers from "../pages/Dashboard/Admin/AllUsers";
+import AdminRoutes from "./AdminRoutes";
+import AdminHome from "../pages/Dashboard/Admin/AdminHome";
+import UserHome from "../pages/Dashboard/User/UserHome";
 
 const Routes = createBrowserRouter([
     {
@@ -37,7 +40,17 @@ const Routes = createBrowserRouter([
 
             {
                 path: 'allUsers',
-                element: <AllUsers></AllUsers>
+                element: <AdminRoutes><AllUsers></AllUsers></AdminRoutes>
+            },
+            {
+                path: 'adminHome',
+                element: <AdminRoutes><AdminHome></AdminHome></AdminRoutes>
+            },
+
+            // routes for user
+            {
+                path: 'userHome',
+                element: <UserHome></UserHome>
             }
         ]
     }
