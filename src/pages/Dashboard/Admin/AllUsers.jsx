@@ -36,6 +36,13 @@ const AllUsers = () => {
                                 icon: "success"
                             });
                         }
+                        else {
+                            Swal.fire({
+                                title: "Error",
+                                text: `error occurred`,
+                                icon: "error"
+                            });
+                        }
                     })
             }
         });
@@ -77,7 +84,7 @@ const AllUsers = () => {
                                     {user.role === 'admin' ? 'Admin' :
                                         <Button
                                             size="xs"
-                                            onClick={handleMakeAdmin}
+                                            onClick={() => handleMakeAdmin(user)}
                                             className="bg-cyan-600 hover:bg-cyan-700 text-white"
                                         >
                                             Make Admin
