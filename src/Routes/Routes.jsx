@@ -12,6 +12,7 @@ import AllUsers from "../pages/Dashboard/Admin/AllUsers";
 import AdminRoutes from "./AdminRoutes";
 import AdminHome from "../pages/Dashboard/Admin/AdminHome";
 import UserHome from "../pages/Dashboard/User/UserHome";
+import AddAPet from "../pages/Dashboard/AddAPet/AddAPet";
 
 const Routes = createBrowserRouter([
     {
@@ -51,6 +52,10 @@ const Routes = createBrowserRouter([
             {
                 path: 'userHome',
                 element: <UserHome></UserHome>
+            },
+            {
+                path: 'addPet',
+                element: <AddAPet></AddAPet>
             }
         ]
     }

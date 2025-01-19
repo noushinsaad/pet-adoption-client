@@ -105,7 +105,7 @@ const Dashboard = () => {
 
 
     return (
-        <div className="flex min-h-screen">
+        <div className="md:flex">
             {/* Sidebar for larger screens */}
             <div className="hidden md:block w-80 bg-gray-50 border-r border-gray-200">
                 <Sidebar>
