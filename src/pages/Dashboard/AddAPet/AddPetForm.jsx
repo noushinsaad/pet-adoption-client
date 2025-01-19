@@ -1,35 +1,71 @@
 import { useForm, Controller } from "react-hook-form";
+import { Button, FileInput, Label, TextInput, Textarea } from "flowbite-react";
 import Select from "react-select";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
+import { useRef } from "react";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import Swal from "sweetalert2";
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?&key=${image_hosting_key}`;
 
 const AddPetForm = () => {
-    const { register, handleSubmit, setValue, control, watch, formState: { errors } } = useForm();
-    const axiosPublic = useAxiosPublic()
+    const quillRef = useRef(null);
+
+    const {
+        register,
+        handleSubmit,
+        setValue,
+        control,
+        reset,
+        watch,
+        formState: { errors },
+    } = useForm();
+
+    const axiosPublic = useAxiosPublic();
+    const axiosSecure = useAxiosSecure()
 
     const onSubmit = async (data) => {
+        const quill = quillRef.current.getEditor();
+        const plainText = quill.getText();
 
-        const imageFile = { image: data.image[0] }
+        const imageFile = { image: data.image[0] };
         const res = await axiosPublic.post(image_hosting_api, imageFile, {
             headers: {
-                'content-type': "multipart/form-data"
+                "content-type": "multipart/form-data",
+            },
+        });
+        if (res.data.success) {
+            const petInfo = {
+                name: data.petName,
+                age: data.petAge,
+                location: data.petLocation,
+                shortDescription: data.shortDescription,
+                longDescription: plainText,
+                photoUrl: res.data.data.display_url,
+                addedAt: new Date().toISOString(),
+                adopted: false
             }
-        })
-        console.log(res)
-        const photoUrl = res.data.data.display_url;
-        // const petData = {
-        //     ...data,
-        //     imageUrl,
-        //     dateAdded: new Date().toISOString(),
-        // };
+            const petDoc = await axiosSecure.post('/pets', petInfo)
+            console.log(petDoc.data)
+            if (petDoc.data.insertedId) {
+                reset()
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: `${data.petName} is added to the menu successfully`,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        }
 
-        console.log(data, photoUrl);
+
+
+
     };
-
 
     return (
         <div className="max-w-4xl mx-auto p-8 bg-gray-50 shadow-lg rounded-lg">
@@ -39,13 +75,10 @@ const AddPetForm = () => {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 {/* Pet Image */}
                 <div>
-                    <label htmlFor="petImage" className="block text-gray-700 font-semibold mb-2">
-                        Pet Image
-                    </label>
-                    <input
-                        type="file"
+                    <Label htmlFor="petImage" value="Pet Image" />
+                    <FileInput
                         id="petImage"
-                        accept="image/*" 
+                        accept="image/*"
                         {...register("image", {
                             required: "Pet picture is required",
                             validate: {
@@ -60,55 +93,49 @@ const AddPetForm = () => {
                                 },
                             },
                         })}
-                        className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"
+                        className="mt-2"
                     />
                     {errors.image && (
                         <p className="text-red-500 text-sm mt-1">{errors.image.message}</p>
                     )}
                 </div>
 
-
                 {/* Pet Name */}
                 <div>
-                    <label htmlFor="petName" className="block text-gray-700 font-semibold mb-2">
-                        Pet Name
-                    </label>
-                    <input
+                    <Label htmlFor="petName" value="Pet Name" />
+                    <TextInput
                         {...register("petName", { required: "Pet name is required" })}
-                        type="text"
+                        id="petName"
                         placeholder="Enter the pet's name"
-                        className="w-full border rounded-lg p-3 text-gray-700 focus:ring focus:ring-blue-200"
+                        shadow
                     />
                     {errors.petName && (
-                        <div className="text-red-500 text-sm mt-1">{errors.petName.message}</div>
+                        <p className="text-red-500 text-sm mt-1">{errors.petName.message}</p>
                     )}
                 </div>
 
                 {/* Pet Age */}
                 <div>
-                    <label htmlFor="petAge" className="block text-gray-700 font-semibold mb-2">
-                        Pet Age (Years)
-                    </label>
-                    <input
+                    <Label htmlFor="petAge" value="Pet Age (Years)" />
+                    <TextInput
                         {...register("petAge", {
                             required: "Pet age is required",
                             valueAsNumber: true,
                             min: 1,
                         })}
+                        id="petAge"
                         type="number"
                         placeholder="Enter the pet's age"
-                        className="w-full border rounded-lg p-3 text-gray-700 focus:ring focus:ring-blue-200"
+                        shadow
                     />
                     {errors.petAge && (
-                        <div className="text-red-500 text-sm mt-1">{errors.petAge.message}</div>
+                        <p className="text-red-500 text-sm mt-1">{errors.petAge.message}</p>
                     )}
                 </div>
 
                 {/* Pet Category */}
                 <div>
-                    <label htmlFor="petCategory" className="block text-gray-700 font-semibold mb-2">
-                        Pet Category
-                    </label>
+                    <Label htmlFor="petCategory" value="Pet Category" />
                     <Controller
                         name="petCategory"
                         control={control}
@@ -116,6 +143,7 @@ const AddPetForm = () => {
                         render={({ field }) => (
                             <Select
                                 {...field}
+                                value={field.value ? { value: field.value, label: field.value.charAt(0).toUpperCase() + field.value.slice(1) } : null}
                                 options={[
                                     { value: "dog", label: "Dog" },
                                     { value: "cat", label: "Cat" },
@@ -129,72 +157,62 @@ const AddPetForm = () => {
                         )}
                     />
                     {errors.petCategory && (
-                        <div className="text-red-500 text-sm mt-1">{errors.petCategory.message}</div>
+                        <p className="text-red-500 text-sm mt-1">{errors.petCategory.message}</p>
                     )}
                 </div>
 
+
                 {/* Pet Location */}
                 <div>
-                    <label htmlFor="petLocation" className="block text-gray-700 font-semibold mb-2">
-                        Pet Location
-                    </label>
-                    <input
+                    <Label htmlFor="petLocation" value="Pet Location" />
+                    <TextInput
                         {...register("petLocation", { required: "Pet location is required" })}
-                        type="text"
+                        id="petLocation"
                         placeholder="Enter the pet's location"
-                        className="w-full border rounded-lg p-3 text-gray-700 focus:ring focus:ring-blue-200"
+                        shadow
                     />
                     {errors.petLocation && (
-                        <div className="text-red-500 text-sm mt-1">{errors.petLocation.message}</div>
+                        <p className="text-red-500 text-sm mt-1">{errors.petLocation.message}</p>
                     )}
                 </div>
 
                 {/* Short Description */}
                 <div>
-                    <label
-                        htmlFor="shortDescription"
-                        className="block text-gray-700 font-semibold mb-2"
-                    >
-                        Short Description
-                    </label>
-                    <input
+                    <Label htmlFor="shortDescription" value="Short Description" />
+                    <Textarea
                         {...register("shortDescription", { required: "Short description is required" })}
-                        type="text"
+                        id="shortDescription"
                         placeholder="Provide a brief description"
-                        className="w-full border rounded-lg p-3 text-gray-700 focus:ring focus:ring-blue-200"
+                        rows={3}
+                        shadow
                     />
                     {errors.shortDescription && (
-                        <div className="text-red-500 text-sm mt-1">{errors.shortDescription.message}</div>
+                        <p className="text-red-500 text-sm mt-1">{errors.shortDescription.message}</p>
                     )}
                 </div>
 
                 {/* Long Description */}
                 <div>
-                    <label
-                        htmlFor="longDescription"
-                        className="block text-gray-700 font-semibold mb-2"
-                    >
-                        Long Description
-                    </label>
+                    <Label htmlFor="longDescription" value="Long Description" />
                     <ReactQuill
+                        ref={quillRef}
                         value={watch("longDescription")}
-                        onChange={(value) =>
-                            setValue("longDescription", value, { shouldValidate: true })
-                        }
+                        onChange={(value) => setValue("longDescription", value, { shouldValidate: true })}
                         placeholder="Provide a detailed description of the pet"
                     />
                     {errors.longDescription && (
-                        <div className="text-red-500 text-sm mt-1">{errors.longDescription.message}</div>
+                        <p className="text-red-500 text-sm mt-1">{errors.longDescription.message}</p>
                     )}
                 </div>
 
                 {/* Submit Button */}
-                <button
+                <Button
                     type="submit"
-                    className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-300"
+                    gradientDuoTone="cyanToBlue"
+                    className="w-full"
                 >
                     Submit
-                </button>
+                </Button>
             </form>
         </div>
     );

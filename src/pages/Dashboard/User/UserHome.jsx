@@ -1,10 +1,13 @@
 import { Card, Button } from "flowbite-react";
+import useAuth from "../../../hooks/useAuth";
+import { Link } from "react-router-dom";
 
 const UserHome = () => {
+    const { user } = useAuth()
     return (
         <div className="bg-gray-50 min-h-screen py-10 px-6">
             <div className="text-center mb-10">
-                <h1 className="text-4xl font-bold text-blue-700">Welcome, User!</h1>
+                <h1 className="text-4xl font-bold text-blue-700">Welcome, {user.displayName}</h1>
                 <p className="text-gray-600 mt-2">
                     Explore your dashboard to manage your pets, adoption requests, and donations.
                 </p>
@@ -18,9 +21,10 @@ const UserHome = () => {
                     <p className="text-gray-600 mb-4">
                         Share details about a pet you&apos;d like to put up for adoption.
                     </p>
-                    <Button className="bg-blue-600 hover:bg-blue-700">
-                        Add Pet
-                    </Button>
+                    <Link to='/dashboard/addPet'>
+                        <Button className="bg-blue-600 hover:bg-blue-700 w-full">
+                            Add Pet
+                        </Button></Link>
                 </Card>
 
                 <Card className="max-w-sm">

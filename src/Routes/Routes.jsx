@@ -12,7 +12,7 @@ import AllUsers from "../pages/Dashboard/Admin/AllUsers";
 import AdminRoutes from "./AdminRoutes";
 import AdminHome from "../pages/Dashboard/Admin/AdminHome";
 import UserHome from "../pages/Dashboard/User/UserHome";
-import AddAPet from "../pages/Dashboard/AddAPet/AddAPet";
+import AddPetForm from "../pages/Dashboard/AddAPet/AddPetForm";
 
 const Routes = createBrowserRouter([
     {
@@ -55,7 +55,7 @@ const Routes = createBrowserRouter([
             },
             {
                 path: 'addPet',
-                element: <AddAPet></AddAPet>
+                element: <AddPetForm></AddPetForm>
             }
         ]
     }
