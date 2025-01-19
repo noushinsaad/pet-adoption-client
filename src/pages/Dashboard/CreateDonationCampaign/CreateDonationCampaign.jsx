@@ -1,6 +1,6 @@
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Button, FileInput, Label, TextInput, Textarea } from "flowbite-react";
-import Select from "react-select";
+
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
@@ -11,67 +11,63 @@ import Swal from "sweetalert2";
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?&key=${image_hosting_key}`;
 
-const AddPetForm = () => {
+
+const CreateDonationCampaign = () => {
     const quillRef = useRef(null);
+    const axiosPublic = useAxiosPublic();
+    const axiosSecure = useAxiosSecure();
 
     const {
         register,
         handleSubmit,
         setValue,
-        control,
         reset,
         watch,
         formState: { errors },
     } = useForm();
 
-    const axiosPublic = useAxiosPublic();
-    const axiosSecure = useAxiosSecure()
-
     const onSubmit = async (data) => {
+        console.log(data);
+
         const quill = quillRef.current.getEditor();
         const plainText = quill.getText();
 
-        const imageFile = { image: data.image[0] };
+        const imageFile = { image: data.image[0] }
         const res = await axiosPublic.post(image_hosting_api, imageFile, {
             headers: {
-                "content-type": "multipart/form-data",
-            },
-        });
-        if (res.data.success) {
-            const petInfo = {
-                name: data.petName,
-                age: data.petAge,
-                location: data.petLocation,
-                shortDescription: data.shortDescription,
-                category: data.petCategory,
-                longDescription: plainText,
-                photoUrl: res.data.data.display_url,
-                addedAt: new Date().toISOString(),
-                adopted: false
+                'content-type': "multipart/form-data"
             }
-            const petDoc = await axiosSecure.post('/pets', petInfo)
-            console.log(petDoc.data)
-            if (petDoc.data.insertedId) {
+        })
+        if (res.data.success) {
+            const donationInfo = {
+                petPicture: res.data.data.display_url,
+                petName: data.petName,
+                lastDateOfDonation: data.lastDateOfDonation,
+                shortDescription: data.shortDescription,
+                maxDonationAmount: data.maxDonationAmount,
+                longDescription: plainText,
+                createdCampaignAt: new Date().toISOString(),
+            }
+            console.log(donationInfo)
+            const donationRes = await axiosSecure.post('/donations', donationInfo)
+            console.log(donationRes.data)
+            if (donationRes.data.insertedId) {
                 reset()
                 Swal.fire({
                     position: "top-end",
                     icon: "success",
-                    title: `${data.petName} is added for the adoption successfully`,
+                    title: `${data.petName} is added to the donation campaign successfully`,
                     showConfirmButton: false,
                     timer: 1500
                 });
             }
         }
-
-
-
-
-    };
+    }
 
     return (
         <div className="max-w-4xl mx-auto p-8 bg-gray-50 shadow-lg rounded-lg">
             <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
-                Add a Pet for Adoption
+                Create a Donation Campaign for a Pet!!
             </h2>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 {/* Pet Image */}
@@ -115,66 +111,45 @@ const AddPetForm = () => {
                     )}
                 </div>
 
-                {/* Pet Age */}
+                {/* Maximum Donation Amount */}
                 <div>
-                    <Label htmlFor="petAge" value="Pet Age (Years)" />
+                    <Label htmlFor="maxDonationAmount" value="Maximum Donation Amount" />
                     <TextInput
-                        {...register("petAge", {
-                            required: "Pet age is required",
-                            valueAsNumber: true,
-                            min: 1,
-                        })}
-                        id="petAge"
+                        {...register("maxDonationAmount", { required: "Maximum donation amount is required" })}
+                        id="maxDonationAmount"
                         type="number"
-                        placeholder="Enter the pet's age"
+                        placeholder="Enter the maximum donation amount"
                         shadow
                     />
-                    {errors.petAge && (
-                        <p className="text-red-500 text-sm mt-1">{errors.petAge.message}</p>
+                    {errors.maxDonationAmount && (
+                        <p className="text-red-500 text-sm mt-1">{errors.maxDonationAmount.message}</p>
                     )}
                 </div>
 
-                {/* Pet Category */}
+                {/* Last Date of Donation */}
                 <div>
-                    <Label htmlFor="petCategory" value="Pet Category" />
-                    <Controller
-                        name="petCategory"
-                        control={control}
-                        rules={{ required: "Pet category is required" }}
-                        render={({ field }) => (
-                            <Select
-                                {...field}
-                                value={field.value ? { value: field.value, label: field.value.charAt(0).toUpperCase() + field.value.slice(1) } : null}
-                                options={[
-                                    { value: "dog", label: "Dog" },
-                                    { value: "cat", label: "Cat" },
-                                    { value: "bird", label: "Bird" },
-                                    { value: "rabbit", label: "Rabbit" },
-                                    { value: "reptile", label: "Reptile" },
-                                    { value: "other", label: "Other" },
-                                ]}
-                                onChange={(option) => field.onChange(option.value)}
-                                placeholder="Select a category"
-                            />
-                        )}
-                    />
-                    {errors.petCategory && (
-                        <p className="text-red-500 text-sm mt-1">{errors.petCategory.message}</p>
-                    )}
-                </div>
-
-
-                {/* Pet Location */}
-                <div>
-                    <Label htmlFor="petLocation" value="Pet Location" />
+                    <Label htmlFor="lastDateOfDonation" value="Last Date of Donation" />
                     <TextInput
-                        {...register("petLocation", { required: "Pet location is required" })}
-                        id="petLocation"
-                        placeholder="Enter the pet's location"
+                        {...register("lastDateOfDonation", {
+                            required: "Last donation date is required",
+                            validate: {
+                                futureDate: (value) => {
+                                    const selectedDate = new Date(value);
+                                    const currentDate = new Date();
+                                    if (selectedDate <= currentDate) {
+                                        return "Please select a future date.";
+                                    }
+                                    return true;
+                                },
+                            },
+                        })}
+                        id="lastDateOfDonation"
+                        type="date"
+                        placeholder="Select the last date of donation"
                         shadow
                     />
-                    {errors.petLocation && (
-                        <p className="text-red-500 text-sm mt-1">{errors.petLocation.message}</p>
+                    {errors.lastDateOfDonation && (
+                        <p className="text-red-500 text-sm mt-1">{errors.lastDateOfDonation.message}</p>
                     )}
                 </div>
 
@@ -220,4 +195,4 @@ const AddPetForm = () => {
     );
 };
 
-export default AddPetForm;
+export default CreateDonationCampaign;

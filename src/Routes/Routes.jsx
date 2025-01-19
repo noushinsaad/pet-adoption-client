@@ -13,6 +13,7 @@ import AdminRoutes from "./AdminRoutes";
 import AdminHome from "../pages/Dashboard/Admin/AdminHome";
 import UserHome from "../pages/Dashboard/User/UserHome";
 import AddPetForm from "../pages/Dashboard/AddAPet/AddPetForm";
+import CreateDonationCampaign from "../pages/Dashboard/CreateDonationCampaign/CreateDonationCampaign";
 
 const Routes = createBrowserRouter([
     {
@@ -56,6 +57,10 @@ const Routes = createBrowserRouter([
             {
                 path: 'addPet',
                 element: <AddPetForm></AddPetForm>
+            },
+            {
+                path: 'createDonationCampaign',
+                element: <CreateDonationCampaign></CreateDonationCampaign>
             }
         ]
     }
