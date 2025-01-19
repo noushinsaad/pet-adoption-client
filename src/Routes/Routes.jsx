@@ -18,6 +18,8 @@ import AllPets from "../pages/Dashboard/Admin/AllPets";
 import AllDonationCampaign from "../pages/Dashboard/Admin/AllDonationCampaign";
 import MyDonationCampaign from "../pages/Dashboard/MyDonationCampaign/MyDonationCampaign";
 import MyAddedPets from "../pages/Dashboard/MyAddedPets/MyAddedPets";
+import PetListing from "../pages/PetListing/PetListing";
+import DonationCampaign from "../pages/DonationCampaign/DonationCampaign";
 
 const Routes = createBrowserRouter([
     {
@@ -36,6 +38,14 @@ const Routes = createBrowserRouter([
             {
                 path: 'login',
                 element: <Login></Login>
+            },
+            {
+                path: 'petListing',
+                element: <PetListing></PetListing>
+            },
+            {
+                path: 'donationCampaigns',
+                element: <DonationCampaign></DonationCampaign>
             }
         ]
     },

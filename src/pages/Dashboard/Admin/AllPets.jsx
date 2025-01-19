@@ -1,19 +1,20 @@
-import { useQuery } from "@tanstack/react-query";
 import { Button, Table } from "flowbite-react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
+import usePetsData from "../../../hooks/usePetsData";
 
 
 const AllPets = () => {
     const axiosSecure = useAxiosSecure();
+    const { allPets, refetch } = usePetsData();
 
-    const { data: pets = [], refetch } = useQuery({
-        queryKey: ["pets"],
-        queryFn: async () => {
-            const res = await axiosSecure.get("/pets");
-            return res.data;
-        },
-    });
+    // const { data: pets = [], refetch } = useQuery({
+    //     queryKey: ["pets"],
+    //     queryFn: async () => {
+    //         const res = await axiosSecure.get("/pets");
+    //         return res.data;
+    //     },
+    // });
 
     const handleChangeAdoptionStatus = async (pet) => {
         await axiosSecure.patch(`/pets/${pet._id}`, { adopt: pet.adopted });
@@ -62,7 +63,7 @@ const AllPets = () => {
                         <Table.HeadCell>Actions</Table.HeadCell>
                     </Table.Head>
                     <Table.Body className="divide-y">
-                        {pets.map((pet, idx) => (
+                        {allPets.map((pet, idx) => (
                             <Table.Row
                                 key={pet._id}
                                 className="hover:bg-gray-50 transition duration-200"
