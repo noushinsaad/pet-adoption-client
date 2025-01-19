@@ -1,6 +1,21 @@
+import { useQuery } from "@tanstack/react-query";
 import { Card, Button } from "flowbite-react";
+import { Link } from "react-router-dom";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const AdminHome = () => {
+    const axiosSecure = useAxiosSecure()
+
+    const { data: stats } = useQuery({
+        queryKey: ['admin-stats'],
+        queryFn: async () => {
+            const res = await axiosSecure.get('/admin-stats');
+            return res.data;
+        },
+    })
+
+    console.log()
+
     return (
         <div className="bg-gray-50 min-h-screen py-10 px-6">
             <div className="text-center mb-10">
@@ -18,9 +33,11 @@ const AdminHome = () => {
                     <p className="text-gray-600 mb-4">
                         View, edit, and manage all the users registered on the platform.
                     </p>
-                    <Button className="bg-green-600 hover:bg-green-700">
-                        Go to Users
-                    </Button>
+                    <Link to="/dashboard/allUsers">
+                        <Button className="bg-green-600 hover:bg-green-700 w-full">
+                            Go to Users
+                        </Button>
+                    </Link>
                 </Card>
 
                 <Card className="max-w-sm">
@@ -30,9 +47,11 @@ const AdminHome = () => {
                     <p className="text-gray-600 mb-4">
                         View and manage all the pets available for adoption.
                     </p>
-                    <Button className="bg-green-600 hover:bg-green-700">
-                        Go to Pets
-                    </Button>
+                    <Link to='/dashboard/allPets'>
+                        <Button className="bg-green-600 hover:bg-green-700 w-full">
+                            Go to Pets
+                        </Button>
+                    </Link>
                 </Card>
 
                 <Card className="max-w-sm">
@@ -42,9 +61,11 @@ const AdminHome = () => {
                     <p className="text-gray-600 mb-4">
                         Track and manage donation campaigns and contributions.
                     </p>
-                    <Button className="bg-green-600 hover:bg-green-700">
-                        Go to Donations
-                    </Button>
+                    <Link to="/dashboard/allDonations">
+                        <Button className="bg-green-600 hover:bg-green-700 w-full">
+                            Go to Donations
+                        </Button>
+                    </Link>
                 </Card>
             </div>
 
@@ -52,11 +73,11 @@ const AdminHome = () => {
                 <h2 className="text-2xl font-semibold text-gray-800 mb-4">Platform Overview</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div className="bg-gray-100 rounded-lg p-4 text-center">
-                        <h3 className="text-4xl font-bold text-green-700">120</h3>
+                        <h3 className="text-4xl font-bold text-green-700">{stats?.userCount}</h3>
                         <p className="text-gray-600">Total Users</p>
                     </div>
                     <div className="bg-gray-100 rounded-lg p-4 text-center">
-                        <h3 className="text-4xl font-bold text-green-700">50</h3>
+                        <h3 className="text-4xl font-bold text-green-700">{stats?.petCount}</h3>
                         <p className="text-gray-600">Pets for Adoption</p>
                     </div>
                     <div className="bg-gray-100 rounded-lg p-4 text-center">

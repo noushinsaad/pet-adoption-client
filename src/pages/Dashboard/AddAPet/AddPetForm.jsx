@@ -146,12 +146,12 @@ const AddPetForm = () => {
                                 {...field}
                                 value={field.value ? { value: field.value, label: field.value.charAt(0).toUpperCase() + field.value.slice(1) } : null}
                                 options={[
-                                    { value: "dog", label: "Dog" },
-                                    { value: "cat", label: "Cat" },
-                                    { value: "bird", label: "Bird" },
-                                    { value: "rabbit", label: "Rabbit" },
-                                    { value: "reptile", label: "Reptile" },
-                                    { value: "other", label: "Other" },
+                                    { value: "Dog", label: "Dog" },
+                                    { value: "Cat", label: "Cat" },
+                                    { value: "Bird", label: "Bird" },
+                                    { value: "Rabbit", label: "Rabbit" },
+                                    { value: "Reptile", label: "Reptile" },
+                                    { value: "Other", label: "Other" },
                                 ]}
                                 onChange={(option) => field.onChange(option.value)}
                                 placeholder="Select a category"

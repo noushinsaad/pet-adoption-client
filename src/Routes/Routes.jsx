@@ -14,6 +14,7 @@ import AdminHome from "../pages/Dashboard/Admin/AdminHome";
 import UserHome from "../pages/Dashboard/User/UserHome";
 import AddPetForm from "../pages/Dashboard/AddAPet/AddPetForm";
 import CreateDonationCampaign from "../pages/Dashboard/CreateDonationCampaign/CreateDonationCampaign";
+import AllPets from "../pages/Dashboard/Admin/AllPets";
 
 const Routes = createBrowserRouter([
     {
@@ -47,6 +48,10 @@ const Routes = createBrowserRouter([
             {
                 path: 'adminHome',
                 element: <AdminRoutes><AdminHome></AdminHome></AdminRoutes>
+            },
+            {
+                path: 'allPets',
+                element: <AdminRoutes><AllPets></AllPets></AdminRoutes>
             },
 
             // routes for user
