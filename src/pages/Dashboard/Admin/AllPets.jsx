@@ -15,7 +15,12 @@ const AllPets = () => {
         },
     });
 
-    const handleChangeAdoptionStatus = pet => {
+    const handleChangeAdoptionStatus = async (pet) => {
+        await axiosSecure.patch(`/pets/${pet._id}`, { adopt: pet.adopted });
+        refetch();
+    }
+
+    const handleDeletePet = pet => {
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -23,27 +28,20 @@ const AllPets = () => {
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, Change Adoption Status!",
-        }).then((result) => {
+            confirmButtonText: "Yes, delete it!"
+        }).then(async (result) => {
             if (result.isConfirmed) {
-                axiosSecure.patch(`/pets/admin/${pet._id}`, { adopt: pet.adopted })
-                    .then(res => {
-                        if (res.data.modifiedCount > 0) {
-                            refetch();
-
-                            Swal.fire({
-                                title: "Success",
-                                text: `Adoption status changed for ${pet.name}.`,
-                                icon: "success",
-                            });
-                        } else {
-                            Swal.fire({
-                                title: "Error",
-                                text: "An error occurred.",
-                                icon: "error",
-                            });
-                        }
-                    })
+                // console.log(result)
+                const res = await axiosSecure.delete(`/pets/${pet._id}`)
+                if (res.data.deletedCount > 0) {
+                    console.log(res.data)
+                    refetch()
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: `${pet.petName} has been removed from adoption.`,
+                        icon: "success"
+                    });
+                }
             }
         })
     }
@@ -59,6 +57,7 @@ const AllPets = () => {
                         <Table.HeadCell>Name</Table.HeadCell>
                         <Table.HeadCell>Age</Table.HeadCell>
                         <Table.HeadCell>Category</Table.HeadCell>
+                        <Table.HeadCell>Added By</Table.HeadCell>
                         <Table.HeadCell>Adoption Status</Table.HeadCell>
                         <Table.HeadCell>Actions</Table.HeadCell>
                     </Table.Head>
@@ -83,6 +82,7 @@ const AllPets = () => {
                                 <Table.Cell className="text-gray-700">{pet.name}</Table.Cell>
                                 <Table.Cell className="text-gray-700">{pet.age}</Table.Cell>
                                 <Table.Cell className="text-gray-700">{pet.category}</Table.Cell>
+                                <Table.Cell className="text-gray-700">{pet.addedBy}</Table.Cell>
                                 <Table.Cell className="text-gray-700">
 
                                     <Button
@@ -98,7 +98,7 @@ const AllPets = () => {
                                     <div className="flex flex-col md:flex-row gap-2 items-center">
                                         <Button
                                             size="xs"
-                                            // onClick={() => handleMakeAdmin(user)}
+                                            onClick={() => handleDeletePet(pet)}
                                             className="bg-red-600 text-white"
                                         >
                                             Delete

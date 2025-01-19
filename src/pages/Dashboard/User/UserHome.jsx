@@ -1,9 +1,24 @@
 import { Card, Button } from "flowbite-react";
 import useAuth from "../../../hooks/useAuth";
 import { Link } from "react-router-dom";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
+
 
 const UserHome = () => {
-    const { user } = useAuth()
+    const { user } = useAuth();
+
+    const axiosSecure = useAxiosSecure();
+
+    const { data: counts = { pets: 0 } } = useQuery({
+        queryKey: ["userActionCounts", user.email],
+        queryFn: async () => {
+            const res = await axiosSecure.get(`/user-stats/${user.email}`)
+            return res.data;
+        }
+    })
+
+
     return (
         <div className="bg-gray-50 min-h-screen py-10 px-6">
             <div className="text-center mb-10">
@@ -80,7 +95,7 @@ const UserHome = () => {
                 <h2 className="text-2xl font-semibold text-gray-800 mb-4">Your Overview</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div className="bg-gray-100 rounded-lg p-4 text-center">
-                        <h3 className="text-4xl font-bold text-blue-700">3</h3>
+                        <h3 className="text-4xl font-bold text-blue-700">{counts.pets}</h3>
                         <p className="text-gray-600">Pets Listed</p>
                     </div>
                     <div className="bg-gray-100 rounded-lg p-4 text-center">

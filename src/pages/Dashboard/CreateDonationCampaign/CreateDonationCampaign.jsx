@@ -7,6 +7,7 @@ import useAxiosPublic from "../../../hooks/useAxiosPublic";
 import { useRef } from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
+import useAuth from "../../../hooks/useAuth";
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?&key=${image_hosting_key}`;
@@ -14,6 +15,7 @@ const image_hosting_api = `https://api.imgbb.com/1/upload?&key=${image_hosting_k
 
 const CreateDonationCampaign = () => {
     const quillRef = useRef(null);
+    const { user } = useAuth()
     const axiosPublic = useAxiosPublic();
     const axiosSecure = useAxiosSecure();
 
@@ -46,6 +48,7 @@ const CreateDonationCampaign = () => {
                 shortDescription: data.shortDescription,
                 maxDonationAmount: data.maxDonationAmount,
                 longDescription: plainText,
+                createdBy: user?.email,
                 createdCampaignAt: new Date().toISOString(),
             }
             console.log(donationInfo)
@@ -56,7 +59,7 @@ const CreateDonationCampaign = () => {
                 Swal.fire({
                     position: "top-end",
                     icon: "success",
-                    title: `${data.petName} is added to the donation campaign successfully`,
+                    title: `Donation Campaign for ${data.petName} is created successfully`,
                     showConfirmButton: false,
                     timer: 1500
                 });

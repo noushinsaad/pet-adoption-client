@@ -7,12 +7,14 @@ import useAxiosPublic from "../../../hooks/useAxiosPublic";
 import { useRef } from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
+import useAuth from "../../../hooks/useAuth";
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?&key=${image_hosting_key}`;
 
 const AddPetForm = () => {
     const quillRef = useRef(null);
+    const { user } = useAuth()
 
     const {
         register,
@@ -47,7 +49,8 @@ const AddPetForm = () => {
                 longDescription: plainText,
                 photoUrl: res.data.data.display_url,
                 addedAt: new Date().toISOString(),
-                adopted: false
+                adopted: false,
+                addedBy: user?.email
             }
             const petDoc = await axiosSecure.post('/pets', petInfo)
             console.log(petDoc.data)
