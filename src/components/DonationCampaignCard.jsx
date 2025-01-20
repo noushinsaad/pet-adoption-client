@@ -20,7 +20,7 @@ const DonationCampaignCard = ({ campaign }) => {
                     <strong>Maximum Donation:</strong> ${campaign.maxDonationAmount}
                 </p>
                 <p className="text-gray-600 mb-2">
-                    <strong>Donated Amount:</strong> ${campaign.donatedAmount || 0}
+                    <strong>Donated Amount:</strong> ${campaign.currentDonations || 0}
                 </p>
                 <Link to={`/donationCampaignDetails/${campaign._id}`}>
                     <Button

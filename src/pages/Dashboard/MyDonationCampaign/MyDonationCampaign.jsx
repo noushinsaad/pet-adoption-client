@@ -1,23 +1,19 @@
-import { useQuery } from "@tanstack/react-query";
-import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { Button, Table } from "flowbite-react";
 import Swal from "sweetalert2";
 import Skeleton from "react-loading-skeleton";
 import 'react-loading-skeleton/dist/skeleton.css';
+import useDonations from "../../../hooks/useDonations";
 
 
 const MyDonationCampaign = () => {
     const axiosSecure = useAxiosSecure()
-    const { user } = useAuth();
 
-    const { data: donationCampaigns = [], refetch, isLoading } = useQuery({
-        queryKey: ['donationCampaign', user?.email],
-        queryFn: async () => {
-            const res = await axiosSecure.get(`/donationsCampaign/user/${user.email}`);
-            return res.data;
-        }
-    })
+
+    const [donationCampaigns, refetch, isLoading] = useDonations();
+
+    
+
 
     const handlePauseStatus = donationCampaign => {
         Swal.fire({
