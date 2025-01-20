@@ -5,7 +5,7 @@ import useAxiosSecure from "./useAxiosSecure";
 const usePetsData = () => {
     const axiosSecure = useAxiosSecure();
 
-    const { data, isLoading, isError,refetch } = useQuery({
+    const { data, isLoading, isError, refetch } = useQuery({
         queryKey: ["petsData"],
         queryFn: async () => {
             const res = await axiosSecure.get('/pets')

@@ -3,10 +3,13 @@ import useAuth from "../../../hooks/useAuth";
 import { Link } from "react-router-dom";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
+import useMyPetsWithRequests from "../../../hooks/usePetsWithRequest";
 
 
 const UserHome = () => {
     const { user } = useAuth();
+    const { totalRequestCount } = useMyPetsWithRequests();
+
 
     const axiosSecure = useAxiosSecure();
 
@@ -17,6 +20,14 @@ const UserHome = () => {
             return res.data;
         }
     })
+
+    const { data: requestCount = { added: 0 } } = useQuery({
+        queryKey: ['adoptionRequestCount', user.email],
+        queryFn: async () => {
+            const response = await axiosSecure.get(`/adoptionRequest/count/${user.email}`);
+            return response.data
+        }
+    });
 
 
     return (
@@ -101,12 +112,12 @@ const UserHome = () => {
                     </div>
                     <div className="bg-gray-100 rounded-lg p-4 text-center">
                         <p className="text-gray-600">Make</p>
-                        <h3 className="text-4xl font-bold text-blue-700">5</h3>
+                        <h3 className="text-4xl font-bold text-blue-700">{requestCount.added}</h3>
                         <p className="text-gray-600">Adoption Requests</p>
                     </div>
                     <div className="bg-gray-100 rounded-lg p-4 text-center">
                         <p className="text-gray-600">Receive</p>
-                        <h3 className="text-4xl font-bold text-blue-700">5</h3>
+                        <h3 className="text-4xl font-bold text-blue-700">{totalRequestCount}</h3>
                         <p className="text-gray-600">Adoption Requests</p>
                     </div>
                     <div className="bg-gray-100 rounded-lg p-4 text-center">

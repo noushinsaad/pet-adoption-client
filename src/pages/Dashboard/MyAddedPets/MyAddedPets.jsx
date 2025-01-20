@@ -1,5 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
-import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { Button, Modal, Pagination } from "flowbite-react";
 import { useState } from "react";
@@ -12,23 +10,17 @@ import {
 } from '@tanstack/react-table';
 import Skeleton from "react-loading-skeleton";
 import 'react-loading-skeleton/dist/skeleton.css';
+import useMyAddedPets from "../../../hooks/usemyAddedPets";
 
 
 const MyAddedPets = () => {
     const axiosSecure = useAxiosSecure();
-    const { user } = useAuth();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedPet, setSelectedPet] = useState(null);
 
 
 
-    const { refetch, data: myAddedPets = [], isLoading } = useQuery({
-        queryKey: ['myAddedPets', user?.email],
-        queryFn: async () => {
-            const res = await axiosSecure.get(`/pets/user/${user.email}`);
-            return res.data;
-        }
-    });
+    const { myAddedPets, refetch, isLoading } = useMyAddedPets();
 
     const handleDeletePet = (pet) => {
         setSelectedPet(pet);

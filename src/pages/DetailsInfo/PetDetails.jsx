@@ -4,15 +4,27 @@ import PetAdoptionModal from "../../components/PetAdoptionModal";
 import { useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import Swal from "sweetalert2";
+import useMyAddedPets from "../../hooks/usemyAddedPets";
 
 const PetDetails = () => {
     const pet = useLoaderData();
     const { user } = useAuth();
     const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
+    const { myAddedPets } = useMyAddedPets();
+    // console.log(myAddedPets)
 
     const handleAdoptClick = () => {
-        if (user) {
+        if (myAddedPets.some(p => p._id === pet._id)) {
+            Swal.fire({
+                position: "top-end",
+                icon: "info",
+                title: `You can not adopt this pet as you add this pet for adoption.`,
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+        else if (user) {
             setShowModal(true);
         } else {
             Swal.fire({
@@ -24,7 +36,7 @@ const PetDetails = () => {
                 cancelButtonText: "Cancel",
             }).then((result) => {
                 if (result.isConfirmed) {
-                    navigate("/login"); 
+                    navigate("/login");
                 }
             });
         }

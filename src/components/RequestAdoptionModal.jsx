@@ -2,6 +2,8 @@
 import { Modal, Table, Button } from "flowbite-react";
 
 const RequestAdoptionModal = ({ showModal, onClose, selectedPet, handleAccept, handleReject }) => {
+
+
     return (
         <Modal show={showModal} onClose={onClose} size="4xl">
             <Modal.Header>Adoption Requests for {selectedPet?.name}</Modal.Header>
@@ -28,6 +30,7 @@ const RequestAdoptionModal = ({ showModal, onClose, selectedPet, handleAccept, h
                                                 size="xs"
                                                 onClick={() => handleAccept(request)}
                                                 className="bg-green-600 text-white"
+                                                disabled={selectedPet.adopted}
                                             >
                                                 Accept
                                             </Button>
@@ -35,6 +38,7 @@ const RequestAdoptionModal = ({ showModal, onClose, selectedPet, handleAccept, h
                                                 size="xs"
                                                 onClick={() => handleReject(request)}
                                                 className="bg-red-600 text-white"
+                                                disabled={(request.isAccepted === false || request.isAccepted === undefined) && selectedPet.adopted}
                                             >
                                                 Reject
                                             </Button>

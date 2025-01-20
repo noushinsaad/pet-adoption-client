@@ -1,22 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "./useAxiosSecure";
-import useAuth from "./useAuth";
+import useMyAddedPets from "./usemyAddedPets";
 
 const useMyPetsWithRequests = () => {
     const axiosSecure = useAxiosSecure();
-    const { user } = useAuth();
 
-
-    const { data: myAddedPets = [], isLoading: petsLoading } = useQuery({
-        queryKey: ['myAddedPets', user?.email],
-        queryFn: async () => {
-            if (!user?.email) return [];
-            const res = await axiosSecure.get(`/pets/user/${user.email}`);
-            return res.data;
-        },
-        enabled: !!user?.email,
-    });
-
+    const { myAddedPets, isLoading: petsLoading } = useMyAddedPets();
 
     const { data: adoptionRequests = [], isLoading: requestsLoading, refetch } = useQuery({
         queryKey: ['adoptionRequests'],
@@ -25,7 +14,6 @@ const useMyPetsWithRequests = () => {
             return res.data;
         },
     });
-
 
     const petsWithRequests = myAddedPets.map(pet => {
         const matchedRequests = adoptionRequests.filter(request => request.petId === pet._id);
@@ -36,13 +24,15 @@ const useMyPetsWithRequests = () => {
         };
     });
 
+    const totalRequestCount = petsWithRequests.reduce((total, pet) => total + pet.requestCount, 0);
 
     const isLoading = petsLoading || requestsLoading;
 
     return {
         petsWithRequests,
         isLoading,
-        refetch
+        refetch,
+        totalRequestCount
     };
 };
 

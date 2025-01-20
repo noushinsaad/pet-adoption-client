@@ -4,9 +4,12 @@ import useMyPetsWithRequests from "../../../hooks/usePetsWithRequest";
 import RequestAdoptionModal from "../../../components/RequestAdoptionModal";
 import Skeleton from "react-loading-skeleton";
 import 'react-loading-skeleton/dist/skeleton.css';
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+
 
 
 const AdoptionRequest = () => {
+    const axiosSecure = useAxiosSecure();
     const { petsWithRequests, isLoading } = useMyPetsWithRequests();
     const [selectedPet, setSelectedPet] = useState(null);
     const [showModal, setShowModal] = useState(false);
@@ -16,14 +19,17 @@ const AdoptionRequest = () => {
         setShowModal(true);
     };
 
-    const handleAccept = (request) => {
-        console.log("Accepted request:", request);
-        // Add logic for accepting the adoption request
+    const handleAccept = async (request) => {
+        await axiosSecure.patch(`/pets/${request.petId}`);
+        await axiosSecure.patch(`/adoptionRequest/${request._id}`, { isAccepted: true });
+        
+        // fetchUpdatedData();
     };
 
-    const handleReject = (request) => {
-        console.log("Rejected request:", request);
-        // Add logic for rejecting the adoption request
+    const handleReject = async (request) => {
+        await axiosSecure.patch(`/pets/${request.petId}`, { adopt: true });
+        await axiosSecure.patch(`/adoptionRequest/${request._id}`, { isAccepted: false });
+        // fetchUpdatedData();
     };
 
     if (isLoading) {

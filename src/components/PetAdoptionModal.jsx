@@ -7,14 +7,17 @@ import useAxiosSecure from "../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 
 
+
 const PetAdoptionModal = ({ pet, showModal, onClose }) => {
     const { register, reset, handleSubmit, formState: { errors } } = useForm();
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
     const [isSubmitting, setIsSubmitting] = useState(false);
+    
 
     const onSubmit = async (data) => {
         setIsSubmitting(true);
+
 
         const adoptionData = {
             ...data,
@@ -43,7 +46,7 @@ const PetAdoptionModal = ({ pet, showModal, onClose }) => {
                 Swal.fire({
                     position: "top-end",
                     icon: "warning",
-                    title: adoptionDoc.data.message, 
+                    title: adoptionDoc.data.message,
                     showConfirmButton: false,
                     timer: 1500
                 });
