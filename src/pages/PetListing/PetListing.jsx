@@ -1,6 +1,7 @@
 import { Button, Card, Label, Select, TextInput } from "flowbite-react";
 import usePetsData from "../../hooks/usePetsData";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const PetListing = () => {
     const { unAdoptedPets } = usePetsData();
@@ -68,11 +69,13 @@ const PetListing = () => {
                             <h3 className="text-xl font-bold mb-2">{pet.name}</h3>
                             <p className="text-gray-600 mb-2">Age: {pet.age} years</p>
                             <p className="text-gray-600 mb-2">Location: {pet.location}</p>
-                            <Button
-                                gradientDuoTone="greenToBlue"
-                            >
-                                View Details
-                            </Button>
+                            <Link to={`/petDetails/${pet._id}`}>
+                                <Button
+                                    gradientDuoTone="greenToBlue"
+                                >
+                                    View Details
+                                </Button>
+                            </Link>
                         </div>
                     </Card>
                 ))}

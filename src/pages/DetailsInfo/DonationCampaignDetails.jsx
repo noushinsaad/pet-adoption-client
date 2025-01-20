@@ -1,10 +1,11 @@
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Button } from "flowbite-react";
 import { Card } from "flowbite-react";
 import RecommendedDonationCampaign from "../../components/RecommendedDonationCampaign";
 import useAuth from "../../hooks/useAuth";
 import DonationModal from "../../components/DonationModal";
+import Swal from "sweetalert2";
 
 // const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
@@ -14,11 +15,30 @@ const DonationCampaignDetails = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [donationAmount, setDonationAmount] = useState("");
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
 
 
 
-    const toggleModal = () => setIsModalOpen(!isModalOpen);
+    const toggleModal = () => {
+        if (user) {
+            setIsModalOpen(!isModalOpen)
+        }
+        else {
+            Swal.fire({
+                title: "Login Required",
+                text: "You need to login or register to donate for any campaign.",
+                icon: "warning",
+                confirmButtonText: "Go to Login",
+                showCancelButton: true,
+                cancelButtonText: "Cancel",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    navigate("/login");
+                }
+            });
+        }
+    }
 
     const handleDonation = (e) => {
         e.preventDefault(); // Prevent form submission
@@ -40,7 +60,7 @@ const DonationCampaignDetails = () => {
                 <img
                     src={donationCampaign.petPicture}
                     alt={donationCampaign.petName}
-                    className="w-full h-72 object-cover rounded-t-lg"
+                    className="w-full h-full object-cover rounded-t-lg"
                 />
                 <div className="p-4">
                     <h2 className="text-3xl font-bold mb-4">{donationCampaign.petName}</h2>
@@ -56,7 +76,6 @@ const DonationCampaignDetails = () => {
                         <Button
                             onClick={toggleModal}
                             gradientDuoTone="greenToBlue"
-                            disabled={!user || donationCampaign.pause}
                         >
                             Donate Now
                         </Button>
