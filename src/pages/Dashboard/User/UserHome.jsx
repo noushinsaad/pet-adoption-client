@@ -93,18 +93,26 @@ const UserHome = () => {
 
             <div className="mt-12 bg-white rounded-lg shadow-lg p-6">
                 <h2 className="text-2xl font-semibold text-gray-800 mb-4">Your Overview</h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                     <div className="bg-gray-100 rounded-lg p-4 text-center">
+                        <p className="text-gray-600">Listed</p>
                         <h3 className="text-4xl font-bold text-blue-700">{counts.pets}</h3>
-                        <p className="text-gray-600">Pets Listed</p>
+                        <p className="text-gray-600">Pets</p>
                     </div>
                     <div className="bg-gray-100 rounded-lg p-4 text-center">
+                        <p className="text-gray-600">Make</p>
                         <h3 className="text-4xl font-bold text-blue-700">5</h3>
                         <p className="text-gray-600">Adoption Requests</p>
                     </div>
                     <div className="bg-gray-100 rounded-lg p-4 text-center">
-                        <h3 className="text-4xl font-bold text-blue-700">$500</h3>
+                        <p className="text-gray-600">Receive</p>
+                        <h3 className="text-4xl font-bold text-blue-700">5</h3>
+                        <p className="text-gray-600">Adoption Requests</p>
+                    </div>
+                    <div className="bg-gray-100 rounded-lg p-4 text-center">
                         <p className="text-gray-600">Total Donations</p>
+                        <h3 className="text-4xl font-bold text-blue-700">500</h3>
+                        <p className="text-gray-600">USD</p>
                     </div>
                 </div>
             </div>

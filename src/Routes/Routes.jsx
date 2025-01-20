@@ -22,6 +22,7 @@ import PetListing from "../pages/PetListing/PetListing";
 import DonationCampaign from "../pages/DonationCampaign/DonationCampaign";
 import DonationCampaignDetails from "../pages/DetailsInfo/DonationCampaignDetails";
 import PetDetails from "../pages/DetailsInfo/PetDetails";
+import AdoptionRequest from "../pages/Dashboard/AdoptionRequest/AdoptionRequest";
 
 const Routes = createBrowserRouter([
     {
@@ -103,6 +104,10 @@ const Routes = createBrowserRouter([
             {
                 path: 'myAddedPets',
                 element: <MyAddedPets></MyAddedPets>
+            },
+            {
+                path: 'adoptionRequest',
+                element: <AdoptionRequest></AdoptionRequest>
             }
         ]
     }

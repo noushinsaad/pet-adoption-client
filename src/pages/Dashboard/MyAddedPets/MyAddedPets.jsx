@@ -10,6 +10,9 @@ import {
     getPaginationRowModel,
     flexRender,
 } from '@tanstack/react-table';
+import Skeleton from "react-loading-skeleton";
+import 'react-loading-skeleton/dist/skeleton.css';
+
 
 const MyAddedPets = () => {
     const axiosSecure = useAxiosSecure();
@@ -17,10 +20,12 @@ const MyAddedPets = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedPet, setSelectedPet] = useState(null);
 
-    const { refetch, data: myAddedPets = [] } = useQuery({
+
+
+    const { refetch, data: myAddedPets = [], isLoading } = useQuery({
         queryKey: ['myAddedPets', user?.email],
         queryFn: async () => {
-            const res = await axiosSecure.get(`/pets/${user.email}`);
+            const res = await axiosSecure.get(`/pets/user/${user.email}`);
             return res.data;
         }
     });
@@ -77,7 +82,7 @@ const MyAddedPets = () => {
                         size="xs"
                         onClick={() => handleChangeAdoptionStatus(info.row.original)}
                         className="bg-green-600 hover:bg-cyan-700 text-white"
-                        // disabled={info.row.original.adopted}
+                    // disabled={info.row.original.adopted}
                     >
                         Adopted?
                     </Button>
@@ -88,12 +93,19 @@ const MyAddedPets = () => {
 
     const table = useReactTable({
         data: myAddedPets,
+        // data: allPets,
         columns,
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         initialState: { pagination: { pageSize: 10 } },
     });
+
+    if (isLoading) {
+        return (<div className="p-6">
+            <Skeleton height={40} width={300} count={3} />
+        </div>)
+    }
 
     return (
         <div className="p-6">

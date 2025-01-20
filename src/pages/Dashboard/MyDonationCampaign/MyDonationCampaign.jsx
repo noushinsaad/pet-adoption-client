@@ -3,16 +3,18 @@ import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { Button, Table } from "flowbite-react";
 import Swal from "sweetalert2";
+import Skeleton from "react-loading-skeleton";
+import 'react-loading-skeleton/dist/skeleton.css';
 
 
 const MyDonationCampaign = () => {
     const axiosSecure = useAxiosSecure()
     const { user } = useAuth();
 
-    const { data: donationCampaigns = [], refetch } = useQuery({
+    const { data: donationCampaigns = [], refetch, isLoading } = useQuery({
         queryKey: ['donationCampaign', user?.email],
         queryFn: async () => {
-            const res = await axiosSecure.get(`/donationsCampaign/${user.email}`);
+            const res = await axiosSecure.get(`/donationsCampaign/user/${user.email}`);
             return res.data;
         }
     })
@@ -50,6 +52,12 @@ const MyDonationCampaign = () => {
                 }
             }
         })
+    }
+
+    if (isLoading) {
+        return (<div className="p-6">
+            <Skeleton height={40} width={300} count={3} />
+        </div>)
     }
 
     return (
