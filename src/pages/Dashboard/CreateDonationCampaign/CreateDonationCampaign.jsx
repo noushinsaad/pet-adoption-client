@@ -52,7 +52,7 @@ const CreateDonationCampaign = () => {
                 createdCampaignAt: new Date().toISOString(),
             }
             console.log(donationInfo)
-            const donationRes = await axiosSecure.post('/donations', donationInfo)
+            const donationRes = await axiosSecure.post('/donationsCampaign', donationInfo)
             console.log(donationRes.data)
             if (donationRes.data.insertedId) {
                 reset()

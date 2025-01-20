@@ -12,7 +12,7 @@ const MyDonationCampaign = () => {
     const { data: donationCampaigns = [], refetch } = useQuery({
         queryKey: ['donationCampaign', user?.email],
         queryFn: async () => {
-            const res = await axiosSecure.get(`/donations/${user.email}`);
+            const res = await axiosSecure.get(`/donationsCampaign/${user.email}`);
             return res.data;
         }
     })
@@ -30,7 +30,7 @@ const MyDonationCampaign = () => {
             if (result.isConfirmed) {
                 // console.log(result)
                 const newPauseStatus = donationCampaign?.pause !== undefined ? donationCampaign.pause : false;
-                const res = await axiosSecure.patch(`/donations/${donationCampaign._id}`, { pause: newPauseStatus })
+                const res = await axiosSecure.patch(`/donationsCampaign/${donationCampaign._id}`, { pause: newPauseStatus })
                 // console.log(res.data)
                 if (res.data.modifiedCount > 0) {
                     // console.log(res.data)

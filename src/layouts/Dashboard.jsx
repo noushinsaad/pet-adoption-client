@@ -56,7 +56,7 @@ const Dashboard = () => {
                             All Pets
                         </Sidebar.Item>
                         <Sidebar.Item href="/dashboard/allDonations" icon={HiCurrencyDollar}>
-                            All Donations
+                            All Donation <br /> Campaign
                         </Sidebar.Item>
                     </Sidebar.ItemGroup>
                 )}
@@ -92,8 +92,8 @@ const Dashboard = () => {
                     <Sidebar.Item href="/petListing" icon={HiCollection}>
                         Pet Listing
                     </Sidebar.Item>
-                    <Sidebar.Item href="/donationCampaign" icon={HiInformationCircle}>
-                        Donations Campaign
+                    <Sidebar.Item href="/donationCampaigns" icon={HiInformationCircle}>
+                        Donation Campaign
                     </Sidebar.Item>
                     <Sidebar.Item className="text-center">
                         <Button onClick={handleSignOut}>Log Out</Button>

@@ -1,19 +1,15 @@
-import { useQuery } from "@tanstack/react-query";
 import { Button, Table } from "flowbite-react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
+import useDonationsData from "../../../hooks/useDonationsData";
 
 
 const AllDonationCampaign = () => {
     const axiosSecure = useAxiosSecure();
 
-    const { data: donationCampaigns = [], refetch } = useQuery({
-        queryKey: ["donationCampaign"],
-        queryFn: async () => {
-            const res = await axiosSecure.get("/donations");
-            return res.data;
-        },
-    });
+    const { donationCampaigns, refetch } = useDonationsData();
+
+
 
     const handleDeleteCampaign = donationCampaign => {
         Swal.fire({
@@ -27,7 +23,7 @@ const AllDonationCampaign = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 // console.log(result)
-                const res = await axiosSecure.delete(`/donations/${donationCampaign._id}`)
+                const res = await axiosSecure.delete(`/donationsCampaign/${donationCampaign._id}`)
                 if (res.data.deletedCount > 0) {
                     console.log(res.data)
                     refetch()
@@ -54,7 +50,7 @@ const AllDonationCampaign = () => {
             if (result.isConfirmed) {
                 // console.log(result)
                 const newPauseStatus = donationCampaign?.pause !== undefined ? donationCampaign.pause : false;
-                const res = await axiosSecure.patch(`/donations/${donationCampaign._id}`, { pause: newPauseStatus })
+                const res = await axiosSecure.patch(`/donationsCampaign/${donationCampaign._id}`, { pause: newPauseStatus })
                 // console.log(res.data)
                 if (res.data.modifiedCount > 0) {
                     // console.log(res.data)

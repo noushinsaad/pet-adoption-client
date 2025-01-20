@@ -20,6 +20,7 @@ import MyDonationCampaign from "../pages/Dashboard/MyDonationCampaign/MyDonation
 import MyAddedPets from "../pages/Dashboard/MyAddedPets/MyAddedPets";
 import PetListing from "../pages/PetListing/PetListing";
 import DonationCampaign from "../pages/DonationCampaign/DonationCampaign";
+import DonationCampaignDetails from "../pages/DetailsInfo/DonationCampaignDetails";
 
 const Routes = createBrowserRouter([
     {
@@ -46,6 +47,11 @@ const Routes = createBrowserRouter([
             {
                 path: 'donationCampaigns',
                 element: <DonationCampaign></DonationCampaign>
+            },
+            {
+                path: 'donationCampaignDetails/:id',
+                element: <DonationCampaignDetails></DonationCampaignDetails>,
+                loader: ({ params }) => fetch(`https://pet-adoption-server-side-zeta.vercel.app/donationsCampaign/${params.id}`)
             }
         ]
     },
