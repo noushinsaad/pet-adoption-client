@@ -12,7 +12,7 @@ const MyDonationCampaign = () => {
 
     const [donationCampaigns, refetch, isLoading] = useDonations();
 
-    
+
 
 
     const handlePauseStatus = donationCampaign => {
@@ -93,15 +93,15 @@ const MyDonationCampaign = () => {
                                         <div
                                             className="bg-cyan-600 h-4 rounded-full"
                                             style={{
-                                                width: `${donationCampaign.currentDonationAmount !== undefined
-                                                    ? (donationCampaign.currentDonationAmount / donationCampaign.maximumDonationAmount) * 100
+                                                width: `${donationCampaign.currentDonations !== undefined
+                                                    ? (donationCampaign.currentDonations /donationCampaign.maxDonationAmount)*100
                                                     : 0}%`
                                             }}
                                         ></div>
                                     </div>
                                     <span className="text-sm font-medium text-gray-700">
-                                        {donationCampaign.currentDonationAmount !== undefined
-                                            ? `${((donationCampaign.currentDonationAmount / donationCampaign.maximumDonationAmount) * 100).toFixed(2)}%`
+                                        {donationCampaign.currentDonations !== undefined
+                                            ? `${((donationCampaign.currentDonations / donationCampaign.maxDonationAmount) * 100).toFixed(2)}%`
                                             : "0%"}
                                     </span>
                                 </Table.Cell>

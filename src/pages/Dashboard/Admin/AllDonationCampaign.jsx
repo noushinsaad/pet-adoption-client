@@ -2,6 +2,7 @@ import { Button, Table } from "flowbite-react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import useDonationsData from "../../../hooks/useDonationsData";
+import { Link } from "react-router-dom";
 
 
 const AllDonationCampaign = () => {
@@ -117,13 +118,15 @@ const AllDonationCampaign = () => {
                                         >
                                             Delete
                                         </Button>
-                                        <Button
-                                            size="xs"
-                                            // onClick={() => handleMakeAdmin(user)}
-                                            className="bg-green-600 hover:bg-cyan-700 text-white"
-                                        >
-                                            Update
-                                        </Button>
+                                        <Link to={`/dashboard/updateDonationCampaign/${donationCampaign._id}`}>
+                                            <Button
+                                                size="xs"
+                                                className="bg-green-600 hover:bg-cyan-700 text-white"
+                                            >
+                                                Update
+                                            </Button>
+                                        </Link>
+
                                         <Button
                                             size="xs"
                                             onClick={() => handlePauseStatus(donationCampaign)}

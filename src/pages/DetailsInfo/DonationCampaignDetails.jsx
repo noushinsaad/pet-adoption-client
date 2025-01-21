@@ -76,6 +76,7 @@ const DonationCampaignDetails = () => {
                         <Button
                             onClick={toggleModal}
                             gradientDuoTone="greenToBlue"
+                            disabled={donationCampaign.pause}
                         >
                             Donate Now
                         </Button>

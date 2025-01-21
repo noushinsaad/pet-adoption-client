@@ -23,6 +23,9 @@ import DonationCampaign from "../pages/DonationCampaign/DonationCampaign";
 import DonationCampaignDetails from "../pages/DetailsInfo/DonationCampaignDetails";
 import PetDetails from "../pages/DetailsInfo/PetDetails";
 import AdoptionRequest from "../pages/Dashboard/AdoptionRequest/AdoptionRequest";
+import UpdatePet from "../pages/Dashboard/UpdatePet/UpdatePet";
+import UpdateDonationCampaign from "../pages/Dashboard/UpdateDonationCampaign/UpdateDonationCampaign";
+import MyDonations from "../pages/Dashboard/MyDonations/MyDonations";
 
 const Routes = createBrowserRouter([
     {
@@ -108,6 +111,18 @@ const Routes = createBrowserRouter([
             {
                 path: 'adoptionRequest',
                 element: <AdoptionRequest></AdoptionRequest>
+            },
+            {
+                path: 'updatePet/:id',
+                element: <UpdatePet></UpdatePet>
+            },
+            {
+                path: 'updateDonationCampaign/:id',
+                element: <UpdateDonationCampaign></UpdateDonationCampaign>
+            },
+            {
+                path: 'myDonations',
+                element: <MyDonations></MyDonations>
             }
         ]
     }

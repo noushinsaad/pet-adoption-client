@@ -2,11 +2,13 @@ import { useQuery } from "@tanstack/react-query";
 import { Card, Button } from "flowbite-react";
 import { Link } from "react-router-dom";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import Skeleton from "react-loading-skeleton";
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const AdminHome = () => {
     const axiosSecure = useAxiosSecure()
 
-    const { data: stats } = useQuery({
+    const { data: stats, isLoading } = useQuery({
         queryKey: ['admin-stats'],
         queryFn: async () => {
             const res = await axiosSecure.get('/admin-stats');
@@ -14,7 +16,11 @@ const AdminHome = () => {
         },
     })
 
-    console.log()
+    if (isLoading) {
+        return (<div className="p-6">
+            <Skeleton height={40} width={300} count={3} />
+        </div>)
+    }
 
     return (
         <div className="bg-gray-50 min-h-screen py-10 px-6">
@@ -81,7 +87,7 @@ const AdminHome = () => {
                         <p className="text-gray-600">Pets for Adoption</p>
                     </div>
                     <div className="bg-gray-100 rounded-lg p-4 text-center">
-                        <h3 className="text-4xl font-bold text-green-700">$8,200</h3>
+                        <h3 className="text-4xl font-bold text-green-700">${stats?.total}</h3>
                         <p className="text-gray-600">Total Donations</p>
                     </div>
                 </div>

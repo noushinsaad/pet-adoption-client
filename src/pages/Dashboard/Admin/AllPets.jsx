@@ -2,19 +2,12 @@ import { Button, Table } from "flowbite-react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import usePetsData from "../../../hooks/usePetsData";
+import { Link } from "react-router-dom";
 
 
 const AllPets = () => {
     const axiosSecure = useAxiosSecure();
     const { allPets, refetch } = usePetsData();
-
-    // const { data: pets = [], refetch } = useQuery({
-    //     queryKey: ["pets"],
-    //     queryFn: async () => {
-    //         const res = await axiosSecure.get("/pets");
-    //         return res.data;
-    //     },
-    // });
 
     const handleChangeAdoptionStatus = async (pet) => {
         await axiosSecure.patch(`/pets/${pet._id}`, { adopt: pet.adopted });
@@ -104,13 +97,15 @@ const AllPets = () => {
                                         >
                                             Delete
                                         </Button>
-                                        <Button
-                                            size="xs"
-                                            // onClick={() => handleMakeAdmin(user)}
-                                            className="bg-cyan-600 hover:bg-cyan-700 text-white"
-                                        >
-                                            Update
-                                        </Button>
+                                        <Link to={`/dashboard/updatePet/${pet._id}`}>
+                                            <Button
+                                                size="xs"
+                                                // onClick={() => handleMakeAdmin(user)}
+                                                className="bg-cyan-600 hover:bg-cyan-700 text-white"
+                                            >
+                                                Update
+                                            </Button>
+                                        </Link>
                                     </div>
                                 </Table.Cell>
 

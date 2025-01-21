@@ -69,8 +69,6 @@ const NavBar = () => {
                                 <span className="block truncate text-sm font-medium">{user?.email}</span>
                             </Dropdown.Header>
                             <Dropdown.Item><Link to={isAdmin ? "/dashboard/adminHome" : "/dashboard/userHome"}>Dashboard</Link></Dropdown.Item>
-                            <Dropdown.Item>Settings</Dropdown.Item>
-                            <Dropdown.Item>Earnings</Dropdown.Item>
                             <Dropdown.Divider />
                             <Dropdown.Item onClick={handleSignOut}>Sign out</Dropdown.Item>
                         </Dropdown>

@@ -65,7 +65,7 @@ const MyAddedPets = () => {
                     </Button>
                     <Button
                         size="xs"
-                        onClick={() => window.location.href = `/update-pet/${info.row.original._id}`}
+                        onClick={() => window.location.href = `/dashboard/updatePet/${info.row.original._id}`}
                         className="bg-cyan-600 hover:bg-cyan-700 text-white"
                     >
                         Update

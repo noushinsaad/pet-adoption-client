@@ -4,16 +4,20 @@ import { Link } from "react-router-dom";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import useMyPetsWithRequests from "../../../hooks/usePetsWithRequest";
+import Skeleton from "react-loading-skeleton";
+import 'react-loading-skeleton/dist/skeleton.css';
+import useMyDonations from "../../../hooks/useMyDonations";
 
 
 const UserHome = () => {
     const { user } = useAuth();
     const { totalRequestCount } = useMyPetsWithRequests();
+    const { totalAmount } = useMyDonations()
 
 
     const axiosSecure = useAxiosSecure();
 
-    const { data: counts = { pets: 0 } } = useQuery({
+    const { data: stats, isLoading } = useQuery({
         queryKey: ["userActionCounts", user.email],
         queryFn: async () => {
             const res = await axiosSecure.get(`/user-stats/${user.email}`)
@@ -21,14 +25,13 @@ const UserHome = () => {
         }
     })
 
-    const { data: requestCount = { added: 0 } } = useQuery({
-        queryKey: ['adoptionRequestCount', user.email],
-        queryFn: async () => {
-            const response = await axiosSecure.get(`/adoptionRequest/count/${user.email}`);
-            return response.data
-        }
-    });
 
+
+    if (isLoading) {
+        return (<div className="p-6">
+            <Skeleton height={40} width={300} count={3} />
+        </div>)
+    }
 
     return (
         <div className="bg-gray-50 min-h-screen py-10 px-6">
@@ -107,12 +110,12 @@ const UserHome = () => {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                     <div className="bg-gray-100 rounded-lg p-4 text-center">
                         <p className="text-gray-600">Listed</p>
-                        <h3 className="text-4xl font-bold text-blue-700">{counts.pets}</h3>
+                        <h3 className="text-4xl font-bold text-blue-700">{stats?.petListed}</h3>
                         <p className="text-gray-600">Pets</p>
                     </div>
                     <div className="bg-gray-100 rounded-lg p-4 text-center">
-                        <p className="text-gray-600">Make</p>
-                        <h3 className="text-4xl font-bold text-blue-700">{requestCount.added}</h3>
+                        <p className="text-gray-600">Made</p>
+                        <h3 className="text-4xl font-bold text-blue-700">{stats?.adoptionCount}</h3>
                         <p className="text-gray-600">Adoption Requests</p>
                     </div>
                     <div className="bg-gray-100 rounded-lg p-4 text-center">
@@ -122,7 +125,7 @@ const UserHome = () => {
                     </div>
                     <div className="bg-gray-100 rounded-lg p-4 text-center">
                         <p className="text-gray-600">Total Donations</p>
-                        <h3 className="text-4xl font-bold text-blue-700">500</h3>
+                        <h3 className="text-4xl font-bold text-blue-700">{totalAmount}</h3>
                         <p className="text-gray-600">USD</p>
                     </div>
                 </div>

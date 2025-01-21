@@ -89,12 +89,16 @@ const DonationModal = ({ donationCampaign, isModalOpen, toggleModal, donationAmo
                     transactionId: paymentIntent.id,
                     date: new Date(),
                     donationFor: donationCampaign.petName,
+                    petPicture: donationCampaign.petPicture,
                     donationCampaignId: donationCampaign._id
                 }
 
 
+                const amount = parseInt(donationAmount)
+                // eslint-disable-next-line no-unused-vars
+                const response = await axiosSecure.put(`/donationsCampaign/${donationCampaign._id}`, { currentDonations: amount })
                 const res = await axiosSecure.post('/donations', donation)
-                const response = await axiosSecure.put(`/donationsCampaign/${donationCampaign._id}`, { currentDonations: donationAmount })
+
                 // console.log('payment saved', res.data);
                 // refetch()
                 if (res.data?.donationResult?.insertedId) {
@@ -105,7 +109,7 @@ const DonationModal = ({ donationCampaign, isModalOpen, toggleModal, donationAmo
                         showConfirmButton: false,
                         timer: 1500
                     });
-                    navigate('/dashboard/userHome')
+                    navigate('/dashboard/myDonations')
                 }
             }
         }
