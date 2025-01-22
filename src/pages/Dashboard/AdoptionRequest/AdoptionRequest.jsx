@@ -4,25 +4,22 @@ import useMyPetsWithRequests from "../../../hooks/usePetsWithRequest";
 import RequestAdoptionModal from "../../../components/RequestAdoptionModal";
 import Skeleton from "react-loading-skeleton";
 import 'react-loading-skeleton/dist/skeleton.css';
-import useAdoptionRequestData from "../../../hooks/useAdoptionRequestData";
+
 
 
 
 const AdoptionRequest = () => {
     const { petsWithRequests, isLoading } = useMyPetsWithRequests();
-    const { adoptionRequests, refetch } = useAdoptionRequestData();
+
     const [selectedPet, setSelectedPet] = useState(null);
-    const [adoptionRequest, setAdoptionRequests] = useState([])
+
     const [showModal, setShowModal] = useState(false);
 
     // console.log(petsWithRequests)
 
     const handleViewRequests = (pet) => {
         setSelectedPet(pet)
-        const matchedRequests = adoptionRequests.filter(request => request.petId === pet._id);
-        setAdoptionRequests(matchedRequests)
         setShowModal(true);
-
     };
 
 
@@ -83,13 +80,11 @@ const AdoptionRequest = () => {
                 </Table>
             </div>
 
-            <RequestAdoptionModal
+            {selectedPet && <RequestAdoptionModal
                 showModal={showModal}
                 onClose={() => setShowModal(false)}
                 selectedPet={selectedPet}
-                matchedRequests={adoptionRequest}
-                refetch={refetch}
-            />
+            />}
         </div>
     );
 };

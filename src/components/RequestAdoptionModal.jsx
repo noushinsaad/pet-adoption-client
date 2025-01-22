@@ -1,22 +1,48 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { Modal, Table, Button } from "flowbite-react";
 import useAxiosSecure from "../hooks/useAxiosSecure";
+import Swal from "sweetalert2";
+import useAdoptionRequestData from "../hooks/useAdoptionRequestData";
+import useMyAddedPets from "../hooks/usemyAddedPets";
 
-const RequestAdoptionModal = ({ showModal, onClose, selectedPet, matchedRequests, refetch }) => {
+const RequestAdoptionModal = ({ showModal, onClose, selectedPet }) => {
     const axiosSecure = useAxiosSecure();
+    const { adoptionRequests, refetch } = useAdoptionRequestData();
+    const matchedRequests = adoptionRequests.filter(request => request.petId === selectedPet._id);
 
     const handleAccept = async (request) => {
-        await axiosSecure.patch(`/pets/${request.petId}`);
-        await axiosSecure.patch(`/adoptionRequest/${request._id}`, { isAccepted: true });
-        refetch()
-        console.log(request)
+        try {
+            await axiosSecure.patch(`/pets/${request.petId}`);
+            await axiosSecure.patch(`/adoptionRequest/${request._id}`, { isAccepted: true });
+            refetch();
+
+            Swal.fire({
+                icon: "success",
+                title: "Success",
+                text: "The adoption request has been accepted!",
+            });
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Something went wrong while accepting the request.",
+            });
+        }
     };
 
     const handleReject = async (request) => {
-        await axiosSecure.patch(`/pets/${request.petId}`, { adopt: true });
-        await axiosSecure.patch(`/adoptionRequest/${request._id}`, { isAccepted: false });
-        refetch()
-        console.log(request)
+        await axiosSecure.delete(`/adoptionRequest/${request._id}`);
+
+        refetch();
+
+
+        Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "The adoption request has been rejected!",
+        });
+
     };
 
     return (
@@ -45,7 +71,7 @@ const RequestAdoptionModal = ({ showModal, onClose, selectedPet, matchedRequests
                                                 size="xs"
                                                 onClick={() => handleAccept(request)}
                                                 className="bg-green-600 text-white"
-                                                disabled={selectedPet.adopted}
+                                                disabled={selectedPet.adopt || request.isAccepted}
                                             >
                                                 Accept
                                             </Button>
