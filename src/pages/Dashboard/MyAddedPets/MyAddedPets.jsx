@@ -46,7 +46,6 @@ const MyAddedPets = () => {
         { accessorKey: 'name', header: 'Name' },
         { accessorKey: 'age', header: 'Age' },
         { accessorKey: 'category', header: 'Category' },
-        { accessorKey: 'addedBy', header: 'Added By' },
         {
             accessorKey: 'adopted',
             header: 'Adoption Status',
@@ -95,7 +94,7 @@ const MyAddedPets = () => {
 
     if (isLoading) {
         return (<div className="p-6">
-            <Skeleton height={40} width={300} count={3} />
+            <Skeleton height={40} width={30} count={3} />
         </div>)
     }
 
@@ -104,23 +103,34 @@ const MyAddedPets = () => {
             <h2 className="text-4xl font-bold text-gray-800 mb-6">My Added Pets</h2>
             <div className="overflow-x-auto bg-white shadow-lg rounded-lg border border-gray-200">
                 <table className="w-full border-collapse border border-gray-200">
-                    <thead className="bg-gray-100">
+                    <thead className="bg-gray-100 text-gray-800">
                         {table.getHeaderGroups().map(headerGroup => (
-                            <tr key={headerGroup.id}>
+                            <tr key={headerGroup.id} className="text-left">
                                 {headerGroup.headers.map(header => (
-                                    <th key={header.id} onClick={header.column.getToggleSortingHandler()} className="cursor-pointer p-4">
+                                    <th
+                                        key={header.id}
+                                        onClick={header.column.getToggleSortingHandler()}
+                                        className="p-4 text-sm font-medium text-left tracking-wide cursor-pointer"
+                                    >
                                         {flexRender(header.column.columnDef.header, header.getContext())}
-                                        {header.column.getIsSorted() && (header.column.getIsSorted() === 'asc' ? ' 🔼' : ' 🔽')}
+                                        {header.column.getIsSorted() && (
+                                            <span>
+                                                {header.column.getIsSorted() === 'asc' ? ' 🔼' : ' 🔽'}
+                                            </span>
+                                        )}
                                     </th>
                                 ))}
                             </tr>
                         ))}
                     </thead>
-                    <tbody className="divide-y">
+                    <tbody className="divide-y divide-gray-200">
                         {table.getRowModel().rows.map(row => (
                             <tr key={row.id} className="hover:bg-gray-50 transition duration-200">
                                 {row.getVisibleCells().map(cell => (
-                                    <td key={cell.id} className="p-4 text-gray-700">
+                                    <td
+                                        key={cell.id}
+                                        className="p-4 text-sm text-gray-700 align-middle"
+                                    >
                                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                     </td>
                                 ))}
@@ -131,7 +141,7 @@ const MyAddedPets = () => {
             </div>
 
             {/* Pagination Controls */}
-            <div className="mt-4">
+            <div className="mt-4 flex justify-end">
                 <Pagination
                     currentPage={table.getState().pagination.pageIndex + 1}
                     totalPages={table.getPageCount()}
@@ -145,7 +155,7 @@ const MyAddedPets = () => {
                     Confirm Deletion
                 </Modal.Header>
                 <Modal.Body>
-                    <p>Are you sure you want to delete this pet?</p>
+                    <p className="text-sm text-gray-700">Are you sure you want to delete this pet?</p>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={confirmDeletePet} color="failure">Yes</Button>
@@ -153,6 +163,7 @@ const MyAddedPets = () => {
                 </Modal.Footer>
             </Modal>
         </div>
+
     );
 };
 

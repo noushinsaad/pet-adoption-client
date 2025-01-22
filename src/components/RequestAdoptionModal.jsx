@@ -1,14 +1,29 @@
 /* eslint-disable react/prop-types */
 import { Modal, Table, Button } from "flowbite-react";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
-const RequestAdoptionModal = ({ showModal, onClose, selectedPet, handleAccept, handleReject }) => {
+const RequestAdoptionModal = ({ showModal, onClose, selectedPet, matchedRequests, refetch }) => {
+    const axiosSecure = useAxiosSecure();
 
+    const handleAccept = async (request) => {
+        await axiosSecure.patch(`/pets/${request.petId}`);
+        await axiosSecure.patch(`/adoptionRequest/${request._id}`, { isAccepted: true });
+        refetch()
+        console.log(request)
+    };
+
+    const handleReject = async (request) => {
+        await axiosSecure.patch(`/pets/${request.petId}`, { adopt: true });
+        await axiosSecure.patch(`/adoptionRequest/${request._id}`, { isAccepted: false });
+        refetch()
+        console.log(request)
+    };
 
     return (
         <Modal show={showModal} onClose={onClose} size="4xl">
             <Modal.Header>Adoption Requests for {selectedPet?.name}</Modal.Header>
             <Modal.Body>
-                {selectedPet?.adoptionRequests?.length > 0 ? (
+                {selectedPet?.requestCount > 0 ? (
                     <Table striped>
                         <Table.Head>
                             <Table.HeadCell>#</Table.HeadCell>
@@ -18,12 +33,12 @@ const RequestAdoptionModal = ({ showModal, onClose, selectedPet, handleAccept, h
                             <Table.HeadCell>Actions</Table.HeadCell>
                         </Table.Head>
                         <Table.Body className="divide-y">
-                            {selectedPet.adoptionRequests.map((request, idx) => (
+                            {matchedRequests.map((request, idx) => (
                                 <Table.Row key={request._id}>
                                     <Table.Cell>{idx + 1}</Table.Cell>
-                                    <Table.Cell>{request.adoptionRequestByName}</Table.Cell>
-                                    <Table.Cell>{request.address}</Table.Cell>
-                                    <Table.Cell>{request.phoneNumber}</Table.Cell>
+                                    <Table.Cell>{request?.adoptionRequestByName}</Table.Cell>
+                                    <Table.Cell>{request?.address}</Table.Cell>
+                                    <Table.Cell>{request?.phoneNumber}</Table.Cell>
                                     <Table.Cell>
                                         <div className="flex gap-2">
                                             <Button

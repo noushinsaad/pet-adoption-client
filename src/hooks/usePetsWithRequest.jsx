@@ -1,25 +1,15 @@
-import { useQuery } from "@tanstack/react-query";
-import useAxiosSecure from "./useAxiosSecure";
 import useMyAddedPets from "./usemyAddedPets";
+import useAdoptionRequestData from "./useAdoptionRequestData";
 
 const useMyPetsWithRequests = () => {
-    const axiosSecure = useAxiosSecure();
-
     const { myAddedPets, isLoading: petsLoading } = useMyAddedPets();
 
-    const { data: adoptionRequests = [], isLoading: requestsLoading, refetch } = useQuery({
-        queryKey: ['adoptionRequests'],
-        queryFn: async () => {
-            const res = await axiosSecure.get('/adoptionRequest');
-            return res.data;
-        },
-    });
+    const { adoptionRequests, requestsLoading } = useAdoptionRequestData();
 
     const petsWithRequests = myAddedPets.map(pet => {
         const matchedRequests = adoptionRequests.filter(request => request.petId === pet._id);
         return {
             ...pet,
-            adoptionRequests: matchedRequests,
             requestCount: matchedRequests.length,
         };
     });
@@ -30,8 +20,8 @@ const useMyPetsWithRequests = () => {
 
     return {
         petsWithRequests,
+        adoptionRequests,
         isLoading,
-        refetch,
         totalRequestCount
     };
 };

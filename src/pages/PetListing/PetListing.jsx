@@ -1,28 +1,38 @@
 import { Button, Card, Label, Select, TextInput } from "flowbite-react";
 import usePetsData from "../../hooks/usePetsData";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 
 const PetListing = () => {
     const { unAdoptedPets } = usePetsData();
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("");
+    const [filteredPets, setFilteredPets] = useState([]);
+    const [searchParams] = useSearchParams();
 
-    const filteredPets = unAdoptedPets
-        .filter((pet) => {
-            const matchesName = pet.name.toLowerCase().includes(searchTerm.toLowerCase());
-            const matchesCategory = selectedCategory
-                ? pet.category === selectedCategory
-                : true;
-            return matchesName && matchesCategory;
-        })
-        .sort((a, b) => new Date(b.addedAt) - new Date(a.addedAt));
+    useEffect(() => {
+        const categoryFromParams = searchParams.get("category");
+        if (categoryFromParams) {
+            setSelectedCategory(categoryFromParams);
+        }
+    }, [searchParams]);
+
+    useEffect(() => {
+        const pets = unAdoptedPets
+            .filter((pet) => {
+                const matchesName = pet.name.toLowerCase().includes(searchTerm.toLowerCase());
+                const matchesCategory = selectedCategory
+                    ? pet.category === selectedCategory
+                    : true;
+                return matchesName && matchesCategory;
+            })
+            .sort((a, b) => new Date(b.addedAt) - new Date(a.addedAt));
+        setFilteredPets(pets);
+    }, [unAdoptedPets, searchTerm, selectedCategory]);
 
     return (
         <div className="max-w-6xl mx-auto p-6">
-            {/* Search and Filter Section */}
             <div className="flex flex-wrap items-center gap-4 mb-6">
-                {/* Search Input */}
                 <div className="flex-1">
                     <Label htmlFor="search" value="Search Pets" />
                     <TextInput
@@ -34,8 +44,6 @@ const PetListing = () => {
                         className="mt-1"
                     />
                 </div>
-
-                {/* Category Dropdown */}
                 <div className="flex-1">
                     <Label htmlFor="category" value="Filter by Category" />
                     <Select
@@ -49,12 +57,11 @@ const PetListing = () => {
                         <option value="Cat">Cat</option>
                         <option value="Bird">Bird</option>
                         <option value="Reptile">Reptile</option>
+                        <option value="Rabbit">Rabbit</option>
                         <option value="Other">Other</option>
                     </Select>
                 </div>
             </div>
-
-            {/* Pet Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredPets.map((pet) => (
                     <Card key={pet._id} className="shadow-md">
@@ -70,11 +77,7 @@ const PetListing = () => {
                             <p className="text-gray-600 mb-2">Age: {pet.age} years</p>
                             <p className="text-gray-600 mb-2">Location: {pet.location}</p>
                             <Link to={`/petDetails/${pet._id}`}>
-                                <Button
-                                    gradientDuoTone="greenToBlue"
-                                >
-                                    View Details
-                                </Button>
+                                <Button gradientDuoTone="greenToBlue">View Details</Button>
                             </Link>
                         </div>
                     </Card>

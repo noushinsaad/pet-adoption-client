@@ -63,9 +63,11 @@ const UserHome = () => {
                     <p className="text-gray-600 mb-4">
                         View and manage the pets you’ve listed for adoption.
                     </p>
-                    <Button className="bg-blue-600 hover:bg-blue-700">
-                        View Pets
-                    </Button>
+                    <Link to='/dashboard/myAddedPets'>
+                        <Button className="bg-blue-600 hover:bg-blue-700 w-full">
+                            View Pets
+                        </Button>
+                    </Link>
                 </Card>
 
                 <Card className="max-w-sm">
@@ -75,9 +77,11 @@ const UserHome = () => {
                     <p className="text-gray-600 mb-4">
                         Review and respond to adoption requests for your pets.
                     </p>
-                    <Button className="bg-blue-600 hover:bg-blue-700">
-                        View Requests
-                    </Button>
+                    <Link to='/dashboard/adoptionRequest'>
+                        <Button className="bg-blue-600 hover:bg-blue-700 w-full">
+                            View Requests
+                        </Button>
+                    </Link>
                 </Card>
 
                 <Card className="max-w-sm">
@@ -87,9 +91,11 @@ const UserHome = () => {
                     <p className="text-gray-600 mb-4">
                         Start a campaign to raise funds for pets in need.
                     </p>
-                    <Button className="bg-blue-600 hover:bg-blue-700">
-                        Create Campaign
-                    </Button>
+                    <Link to='/dashboard/createDonationCampaign'>
+                        <Button className="bg-blue-600 hover:bg-blue-700 w-full">
+                            Create Campaign
+                        </Button>
+                    </Link>
                 </Card>
 
                 <Card className="max-w-sm">
@@ -99,9 +105,11 @@ const UserHome = () => {
                     <p className="text-gray-600 mb-4">
                         Track your donations and their impact.
                     </p>
-                    <Button className="bg-blue-600 hover:bg-blue-700">
-                        View Donations
-                    </Button>
+                    <Link to='/dashboard/myDonations'>
+                        <Button className="bg-blue-600 w-full hover:bg-blue-700">
+                            View Donations
+                        </Button>
+                    </Link>
                 </Card>
             </div>
 

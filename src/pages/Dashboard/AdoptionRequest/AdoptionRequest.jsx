@@ -4,33 +4,28 @@ import useMyPetsWithRequests from "../../../hooks/usePetsWithRequest";
 import RequestAdoptionModal from "../../../components/RequestAdoptionModal";
 import Skeleton from "react-loading-skeleton";
 import 'react-loading-skeleton/dist/skeleton.css';
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import useAdoptionRequestData from "../../../hooks/useAdoptionRequestData";
 
 
 
 const AdoptionRequest = () => {
-    const axiosSecure = useAxiosSecure();
     const { petsWithRequests, isLoading } = useMyPetsWithRequests();
+    const { adoptionRequests, refetch } = useAdoptionRequestData();
     const [selectedPet, setSelectedPet] = useState(null);
+    const [adoptionRequest, setAdoptionRequests] = useState([])
     const [showModal, setShowModal] = useState(false);
 
+    // console.log(petsWithRequests)
+
     const handleViewRequests = (pet) => {
-        setSelectedPet(pet);
+        setSelectedPet(pet)
+        const matchedRequests = adoptionRequests.filter(request => request.petId === pet._id);
+        setAdoptionRequests(matchedRequests)
         setShowModal(true);
+
     };
 
-    const handleAccept = async (request) => {
-        await axiosSecure.patch(`/pets/${request.petId}`);
-        await axiosSecure.patch(`/adoptionRequest/${request._id}`, { isAccepted: true });
-        
-        // fetchUpdatedData();
-    };
 
-    const handleReject = async (request) => {
-        await axiosSecure.patch(`/pets/${request.petId}`, { adopt: true });
-        await axiosSecure.patch(`/adoptionRequest/${request._id}`, { isAccepted: false });
-        // fetchUpdatedData();
-    };
 
     if (isLoading) {
         return (<div className="p-6">
@@ -92,8 +87,8 @@ const AdoptionRequest = () => {
                 showModal={showModal}
                 onClose={() => setShowModal(false)}
                 selectedPet={selectedPet}
-                handleAccept={handleAccept}
-                handleReject={handleReject}
+                matchedRequests={adoptionRequest}
+                refetch={refetch}
             />
         </div>
     );

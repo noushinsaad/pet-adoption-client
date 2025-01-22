@@ -16,6 +16,8 @@
 //                     </p>
 //                 </div>
 
+import { Link } from "react-router-dom";
+
 //                 {/* Section: How the Platform Works */}
 //                 <div className="bg-white p-6 shadow-lg rounded-lg">
 //                     <h3 className="text-2xl font-semibold text-green-700 mb-4">How It Works</h3>
@@ -80,9 +82,11 @@ const AboutUs = () => {
                 <p className="text-lg text-gray-700 max-w-2xl mx-auto">
                     Together, we can make the world a better place—one adoption at a time. Be a hero and give a pet a forever home.
                 </p>
-                <button className="bg-green-600 text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:bg-green-700 transition duration-300 mt-8">
-                    Start Your Adoption Journey
-                </button>
+                <Link to='/petListing'>
+                    <button className="bg-green-600 text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:bg-green-700 transition duration-300 mt-8">
+                        Start Your Adoption Journey
+                    </button>
+                </Link>
             </div>
         </div>
     );
