@@ -47,7 +47,7 @@ const MyDonations = () => {
 
     return (
         <div className="p-6">
-            <h2 className="text-4xl font-bold text-gray-800 mb-6">My Donation Campaign</h2>
+            <h2 className="text-4xl font-bold text-gray-800 mb-6">My Donations</h2>
             <div className="overflow-x-auto bg-white shadow-lg rounded-lg border border-gray-200">
                 <Table striped>
                     <Table.Head className="bg-gray-100">

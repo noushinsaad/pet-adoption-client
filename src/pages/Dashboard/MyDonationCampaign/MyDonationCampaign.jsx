@@ -50,7 +50,7 @@ const MyDonationCampaign = () => {
     const handleViewDonators = async (campaign) => {
         setShowModal(true);
         setSelectedCampaign(campaign);
-        setIsModalLoading(true); 
+        setIsModalLoading(true);
 
         try {
             const res = await axiosSecure.get(`/donations/${campaign._id}`);
@@ -58,7 +58,7 @@ const MyDonationCampaign = () => {
         } catch (error) {
             console.error("Failed to fetch donators", error);
         } finally {
-            setIsModalLoading(false); 
+            setIsModalLoading(false);
         }
     };
 
@@ -73,76 +73,89 @@ const MyDonationCampaign = () => {
     return (
         <div className="p-6">
             <h2 className="text-4xl font-bold text-gray-800 mb-6">My Donation Campaign</h2>
-            <div className="overflow-x-auto bg-white shadow-lg rounded-lg border border-gray-200">
-                <Table striped>
-                    <Table.Head className="bg-gray-100">
-                        <Table.HeadCell>#</Table.HeadCell>
-                        <Table.HeadCell>Donation For</Table.HeadCell>
-                        <Table.HeadCell>Maximum Donation Amount</Table.HeadCell>
-                        <Table.HeadCell>Donation Progress Bar</Table.HeadCell>
-                        <Table.HeadCell>Actions</Table.HeadCell>
-                    </Table.Head>
-                    <Table.Body className="divide-y">
-                        {donationCampaigns.map((campaign, idx) => (
-                            <Table.Row key={campaign._id} className="hover:bg-gray-50 transition duration-200">
-                                <Table.Cell className="font-medium text-gray-900">{idx + 1}</Table.Cell>
-                                <Table.Cell>
-                                    <div className="h-12 w-12">
-                                        <img
-                                            className="rounded-full w-full h-full object-cover"
-                                            src={campaign.petPicture}
-                                            alt={campaign.petName}
-                                        />
-                                    </div>
-                                    <p className="text-gray-700">
-                                        <span className="font-semibold">Name: </span>
-                                        {campaign.petName}
-                                    </p>
-                                </Table.Cell>
-                                <Table.Cell className="text-gray-700">{campaign.maxDonationAmount} $</Table.Cell>
-                                <Table.Cell className="text-gray-700">
-                                    <div className="w-full bg-gray-200 rounded-full h-4">
-                                        <div
-                                            className="bg-cyan-600 h-4 rounded-full"
-                                            style={{
-                                                width: `${campaign.currentDonations ? (campaign.currentDonations / campaign.maxDonationAmount) * 100 : 0}%`,
-                                            }}
-                                        ></div>
-                                    </div>
-                                    <span className="text-sm font-medium text-gray-700">
-                                        {campaign.currentDonations
-                                            ? `${((campaign.currentDonations / campaign.maxDonationAmount) * 100).toFixed(2)}%`
-                                            : "0%"}
-                                    </span>
-                                </Table.Cell>
-                                <Table.Cell>
-                                    <div className="flex flex-col md:flex-row gap-2 items-center flex-wrap">
-                                        <Button
-                                            size="xs"
-                                            onClick={() => handlePauseStatus(campaign)}
-                                            className="bg-green-600 text-white"
-                                        >
-                                            {campaign.pause ? "Unpause" : "Pause"}
-                                        </Button>
-                                        <Link to={`/dashboard/updateDonationCampaign/${campaign._id}`}>
-                                            <Button size="xs" className="bg-blue-600 hover:bg-cyan-700 text-white">
-                                                Edit
+            {donationCampaigns.length > 0 ?
+                <div className="overflow-x-auto bg-white shadow-lg rounded-lg border border-gray-200">
+                    <Table striped>
+                        <Table.Head className="bg-gray-100">
+                            <Table.HeadCell>#</Table.HeadCell>
+                            <Table.HeadCell>Donation For</Table.HeadCell>
+                            <Table.HeadCell>Maximum Donation Amount</Table.HeadCell>
+                            <Table.HeadCell>Donation Progress Bar</Table.HeadCell>
+                            <Table.HeadCell>Actions</Table.HeadCell>
+                        </Table.Head>
+                        <Table.Body className="divide-y">
+                            {donationCampaigns.map((campaign, idx) => (
+                                <Table.Row key={campaign._id} className="hover:bg-gray-50 transition duration-200">
+                                    <Table.Cell className="font-medium text-gray-900">{idx + 1}</Table.Cell>
+                                    <Table.Cell>
+                                        <div className="h-12 w-12">
+                                            <img
+                                                className="rounded-full w-full h-full object-cover"
+                                                src={campaign.petPicture}
+                                                alt={campaign.petName}
+                                            />
+                                        </div>
+                                        <p className="text-gray-700">
+                                            <span className="font-semibold">Name: </span>
+                                            {campaign.petName}
+                                        </p>
+                                    </Table.Cell>
+                                    <Table.Cell className="text-gray-700">{campaign.maxDonationAmount} $</Table.Cell>
+                                    <Table.Cell className="text-gray-700">
+                                        <div className="w-full bg-gray-200 rounded-full h-4">
+                                            <div
+                                                className="bg-cyan-600 h-4 rounded-full"
+                                                style={{
+                                                    width: `${campaign.currentDonations ? (campaign.currentDonations / campaign.maxDonationAmount) * 100 : 0}%`,
+                                                }}
+                                            ></div>
+                                        </div>
+                                        <span className="text-sm font-medium text-gray-700">
+                                            {campaign.currentDonations
+                                                ? `${((campaign.currentDonations / campaign.maxDonationAmount) * 100).toFixed(2)}%`
+                                                : "0%"}
+                                        </span>
+                                    </Table.Cell>
+                                    <Table.Cell>
+                                        <div className="flex flex-col md:flex-row gap-2 items-center flex-wrap">
+                                            <Button
+                                                size="xs"
+                                                onClick={() => handlePauseStatus(campaign)}
+                                                className="bg-green-600 text-white"
+                                            >
+                                                {campaign.pause ? "Unpause" : "Pause"}
                                             </Button>
-                                        </Link>
-                                        <Button
-                                            size="xs"
-                                            onClick={() => handleViewDonators(campaign)}
-                                            className="bg-cyan-600 hover:bg-cyan-700 text-white"
-                                        >
-                                            View Donators
-                                        </Button>
-                                    </div>
-                                </Table.Cell>
-                            </Table.Row>
-                        ))}
-                    </Table.Body>
-                </Table>
-            </div>
+                                            <Link to={`/dashboard/updateDonationCampaign/${campaign._id}`}>
+                                                <Button size="xs" className="bg-blue-600 hover:bg-cyan-700 text-white">
+                                                    Edit
+                                                </Button>
+                                            </Link>
+                                            <Button
+                                                size="xs"
+                                                onClick={() => handleViewDonators(campaign)}
+                                                className="bg-cyan-600 hover:bg-cyan-700 text-white"
+                                            >
+                                                View Donators
+                                            </Button>
+                                        </div>
+                                    </Table.Cell>
+                                </Table.Row>
+                            ))}
+                        </Table.Body>
+                    </Table>
+                </div> :
+                <div className="text-center py-12">
+                    <p className="text-lg text-gray-600">
+                        You have not created any campaign for donation yet.
+                    </p>
+                    <Button
+                        onClick={() => (window.location.href = "/dashboard/createDonationCampaign")}
+                        className="bg-green-600 text-white mt-4"
+                    >
+                        Create a Donation Campaign
+                    </Button>
+                </div>
+            }
 
             {/* Donators Modal */}
             <ShowDonatorsModal
