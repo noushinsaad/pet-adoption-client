@@ -1,7 +1,6 @@
 import { Button, Drawer, Sidebar } from "flowbite-react";
 import { useState } from "react";
 import {
-
     HiClipboard,
     HiCollection,
     HiCurrencyDollar,
@@ -14,100 +13,79 @@ import {
 import { HiHome } from "react-icons/hi2";
 import { Outlet } from "react-router-dom";
 import useAdmin from "../hooks/useAdmin";
-import Swal from "sweetalert2";
-import useAuth from "../hooks/useAuth";
 import { MdSpaceDashboard } from "react-icons/md";
+import DashboardNavBar from "../pages/Dashboard/DashboardNavBar/DashboardNavBar";
 
 const Dashboard = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const { user, logOut } = useAuth();
+
 
     const handleClose = () => setIsOpen(false);
     const handleOpen = () => setIsOpen(true);
 
     const [isAdmin] = useAdmin();
 
-    const handleSignOut = () => {
-        logOut()
-            .then(() => {
-                Swal.fire({
-                    position: "top-end",
-                    icon: "success",
-                    title: `${user.displayName} logged out successfully`,
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-            })
-            .catch(error => console.log(error))
-    }
+
 
     const links = (
-        <>
-            <Sidebar.Items>
-                {isAdmin && (
-                    <Sidebar.ItemGroup>
-                        <Sidebar.Item href="/dashboard/adminHome" icon={HiHome}>
-                            Admin Home
-                        </Sidebar.Item>
-                        <Sidebar.Item href="/dashboard/allUsers" icon={HiUsers}>
-                            All Users
-                        </Sidebar.Item>
-                        <Sidebar.Item href="/dashboard/allPets" icon={HiHeart}>
-                            All Pets
-                        </Sidebar.Item>
-                        <Sidebar.Item href="/dashboard/allDonations" icon={HiCurrencyDollar}>
-                            All Donation <br /> Campaign
-                        </Sidebar.Item>
-                    </Sidebar.ItemGroup>
-                )}
-
+        <Sidebar.Items>
+            {isAdmin && (
                 <Sidebar.ItemGroup>
-                    <Sidebar.Item href="/dashboard/userHome" icon={HiHome}>
-                        User Home
+                    <Sidebar.Item href="/dashboard/adminHome" icon={HiHome}>
+                        Admin Home
                     </Sidebar.Item>
-                    <Sidebar.Item href="/dashboard/myAddedPets" icon={HiHeart}>
-                        My Added Pets
+                    <Sidebar.Item href="/dashboard/allUsers" icon={HiUsers}>
+                        All Users
                     </Sidebar.Item>
-                    <Sidebar.Item href="/dashboard/adoptionRequest" icon={HiClipboard}>
-                        Adoption Request
+                    <Sidebar.Item href="/dashboard/allPets" icon={HiHeart}>
+                        All Pets
                     </Sidebar.Item>
-                    <Sidebar.Item href="/dashboard/myDonationCampaign" icon={HiClipboard}>
-                        My Donation <br /> Campaigns
-                    </Sidebar.Item>
-                    <Sidebar.Item href="/dashboard/myDonations" icon={HiCurrencyDollar}>
-                        My Donations
+                    <Sidebar.Item href="/dashboard/allDonations" icon={HiCurrencyDollar}>
+                        All Donation <br /> Campaign
                     </Sidebar.Item>
                 </Sidebar.ItemGroup>
+            )}
 
-                <Sidebar.ItemGroup>
-                    <Sidebar.Item href="/" icon={HiHome}>
-                        Home
-                    </Sidebar.Item>
-                    <Sidebar.Item href="/petListing" icon={HiCollection}>
-                        Pet Listing
-                    </Sidebar.Item>
-                    <Sidebar.Item href="/donationCampaigns" icon={HiInformationCircle}>
-                        Donation Campaign
-                    </Sidebar.Item>
-                    <Sidebar.Item href="/dashboard/addPet" icon={HiShoppingBag}>
-                        Add a Pet
-                    </Sidebar.Item>
-                    <Sidebar.Item href="/dashboard/createDonationCampaign" icon={HiPencil}>
-                        Create Donation <br /> Campaign
-                    </Sidebar.Item>
-                    <Sidebar.Item className="text-center">
-                        <Button onClick={handleSignOut}>Log Out</Button>
-                    </Sidebar.Item>
-                </Sidebar.ItemGroup>
-            </Sidebar.Items>
-        </>
+            <Sidebar.ItemGroup>
+                <Sidebar.Item href="/dashboard/userHome" icon={HiHome}>
+                    User Home
+                </Sidebar.Item>
+                <Sidebar.Item href="/dashboard/myAddedPets" icon={HiHeart}>
+                    My Added Pets
+                </Sidebar.Item>
+                <Sidebar.Item href="/dashboard/adoptionRequest" icon={HiClipboard}>
+                    Adoption Request
+                </Sidebar.Item>
+                <Sidebar.Item href="/dashboard/myDonationCampaign" icon={HiClipboard}>
+                    My Donation <br /> Campaigns
+                </Sidebar.Item>
+                <Sidebar.Item href="/dashboard/myDonations" icon={HiCurrencyDollar}>
+                    My Donations
+                </Sidebar.Item>
+            </Sidebar.ItemGroup>
+
+            <Sidebar.ItemGroup>
+               
+                <Sidebar.Item href="/petListing" icon={HiCollection}>
+                    Pet Listing
+                </Sidebar.Item>
+                <Sidebar.Item href="/donationCampaigns" icon={HiInformationCircle}>
+                    Donation Campaign
+                </Sidebar.Item>
+                <Sidebar.Item href="/dashboard/addPet" icon={HiShoppingBag}>
+                    Add a Pet
+                </Sidebar.Item>
+                <Sidebar.Item href="/dashboard/createDonationCampaign" icon={HiPencil}>
+                    Create Donation <br /> Campaign
+                </Sidebar.Item>
+            </Sidebar.ItemGroup>
+        </Sidebar.Items>
     );
-
 
     return (
         <div className="md:flex">
             {/* Sidebar for larger screens */}
-            <div className="hidden md:block w-80 bg-gray-50 border-r border-gray-200">
+            <div className="hidden md:block  bg-gray-50 border-r border-gray-200">
                 <Sidebar>
                     <div className="py-4 px-2">
                         {links}
@@ -134,12 +112,19 @@ const Dashboard = () => {
                 </Drawer.Items>
             </Drawer>
 
+            {/* NavBar at the top of the content section */}
+            
+
             {/* Content Section */}
-            <div className="flex-1 p-6">
-                <Outlet />
+            <div className="flex-1 dark:bg-gray-700">
+                <div className="w-full bg-white shadow-md">
+                    <DashboardNavBar></DashboardNavBar>
+                </div>
+                <div className="p-6 ">
+                    <Outlet />
+                </div>
             </div>
         </div>
-
     );
 };
 
