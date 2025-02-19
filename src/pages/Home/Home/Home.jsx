@@ -3,7 +3,9 @@ import Banner from "../Banner/Banner";
 import CallToAction from "../CallToAction/CallToAction";
 import ContactUs from "../ContactUs/ContactUs";
 import DonateNow from "../DonateNow/DonateNow";
+import PetCareTips from "../PetCareTips/PetCareTips";
 import PetsCategory from "../PetsCategory/PetsCategory";
+import WhyAdopt from "../WhyAdopt/WhyAdopt";
 
 
 
@@ -14,6 +16,8 @@ const Home = () => {
             <PetsCategory></PetsCategory>
             <CallToAction></CallToAction>
             <DonateNow></DonateNow>
+            <PetCareTips></PetCareTips>
+            <WhyAdopt></WhyAdopt>
             <AboutUs></AboutUs>
             <ContactUs></ContactUs>
         </div>

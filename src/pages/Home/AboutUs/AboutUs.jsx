@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const AboutUs = () => {
     return (
-        <div id='aboutus' className="h-screen bg-gradient-to-br from-green-50 to-green-100 py-16 px-6 md:px-20 space-y-4">
+        <div id='aboutus' className="bg-gradient-to-br from-green-50 to-green-100 py-16 px-6 md:px-20 space-y-4">
             <div className="text-center">
                 <h2 className="text-4xl font-extrabold text-green-800">
                     About Us
