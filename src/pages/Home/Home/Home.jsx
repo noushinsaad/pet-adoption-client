@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+import { Helmet } from "react-helmet";
 import AboutUs from "../AboutUs/AboutUs";
 import Banner from "../Banner/Banner";
 import CallToAction from "../CallToAction/CallToAction";
@@ -9,9 +11,13 @@ import WhyAdopt from "../WhyAdopt/WhyAdopt";
 
 
 
-const Home = () => {
+const Home = ({title}) => {
     return (
         <div>
+            <Helmet>
+                <title>{title || "Home | furEverHome"}</title>
+            </Helmet>
+
             <Banner></Banner>
             <PetsCategory></PetsCategory>
             <CallToAction></CallToAction>

@@ -7,12 +7,16 @@ import logo from '../../assets/logo.png'
 import useAuth from "../../hooks/useAuth";
 import Swal from "sweetalert2";
 import useAdmin from "../../hooks/useAdmin";
+import useDarkMode from "../../hooks/useDarkMode";  
 
 const NavBar = () => {
     const { user, logOut } = useAuth();
     const location = useLocation();
-    const [isAdmin] = useAdmin()
-    const noHeaderFooter = location.pathname.includes('login') || location.pathname.includes('register')
+    const [isAdmin] = useAdmin();
+    const noHeaderFooter = location.pathname.includes('login') || location.pathname.includes('register');
+
+
+    const [darkMode, toggleDarkMode] = useDarkMode();
 
     const handleSignOut = () => {
         logOut()
@@ -25,8 +29,8 @@ const NavBar = () => {
                     timer: 1500
                 });
             })
-            .catch(error => console.log(error))
-    }
+            .catch(error => console.log(error));
+    };
 
     const links = (
         <>
@@ -49,13 +53,11 @@ const NavBar = () => {
                     </NavLink>
                 </>
             }
-
         </>
     );
 
     return (
-
-        <Navbar className="bg-green-200  md:px-10" fluid>
+        <Navbar className={`md:px-10 ${darkMode ? 'bg-gray-900 text-white' : 'bg-green-200'}`} fluid>
             <Navbar.Brand href="/">
                 <img src={logo} className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" />
                 <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">furEver Home</span>
@@ -63,7 +65,7 @@ const NavBar = () => {
 
             {
                 noHeaderFooter ||
-                <div className="flex md:order-2">
+                <div className="flex justify-center items-center md:order-2">
                     {user ? (
                         <Dropdown
                             arrowIcon={true}
@@ -87,15 +89,21 @@ const NavBar = () => {
                     ) : (
                         <Link to='/login'><Button>Login/Register</Button></Link>
                     )}
+                    <button
+                        onClick={toggleDarkMode}
+                        className="ml-4 p-3 bg-green-600 text-white rounded-full shadow-md hover:bg-green-700 transition duration-300"
+                    >
+                        {darkMode ? "🌙" : "🌞"}
+                    </button>
                     <Navbar.Toggle />
                 </div>
             }
+
             <Navbar.Collapse>
                 {links}
             </Navbar.Collapse>
 
         </Navbar>
-
     );
 };
 
