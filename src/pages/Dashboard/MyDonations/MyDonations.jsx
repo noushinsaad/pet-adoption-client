@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 
 const MyDonations = () => {
     const axiosSecure = useAxiosSecure();
-    const { myDonations, refetch, isLoading } = useMyDonations();
+    const { myDonations, refetch, isLoading, totalAmount } = useMyDonations();
 
     const handleRefund = donation => {
         Swal.fire({
@@ -21,7 +21,6 @@ const MyDonations = () => {
             confirmButtonText: "Yes, Refund!"
         }).then(async (result) => {
             if (result.isConfirmed) {
-                console.log(-donation.amount, donation._id, donation.donationCampaignId)
                 // console.log(result)
                 const res = await axiosSecure.delete(`/donations/${donation._id}`);
                 // eslint-disable-next-line no-unused-vars
@@ -76,9 +75,6 @@ const MyDonations = () => {
                                     <p className="text-gray-700"><span className="font-semibold">Name: </span>{donation.donationFor}</p>
                                 </Table.Cell>
                                 <Table.Cell className="text-gray-700">{donation.amount} $</Table.Cell>
-
-
-
                                 <Table.Cell >
                                     <div className="flex flex-col md:flex-row gap-2 items-center flex-wrap">
                                         <Button
@@ -91,9 +87,12 @@ const MyDonations = () => {
 
                                     </div>
                                 </Table.Cell>
-
                             </Table.Row>
                         ))}
+                        <Table.Row>
+                            <Table.Cell colSpan={2} className="text-lg font-semibold text-gray-700 text-center">Total</Table.Cell>
+                            <Table.Cell colSpan={2} className="text-lg font-semibold text-gray-700 text-center">{totalAmount}$</Table.Cell>
+                        </Table.Row>
                     </Table.Body>
                 </Table>
             </div>

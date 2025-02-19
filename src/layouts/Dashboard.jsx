@@ -65,17 +65,11 @@ const Dashboard = () => {
                     <Sidebar.Item href="/dashboard/userHome" icon={HiHome}>
                         User Home
                     </Sidebar.Item>
-                    <Sidebar.Item href="/dashboard/addPet" icon={HiShoppingBag}>
-                        Add a Pet
-                    </Sidebar.Item>
                     <Sidebar.Item href="/dashboard/myAddedPets" icon={HiHeart}>
                         My Added Pets
                     </Sidebar.Item>
                     <Sidebar.Item href="/dashboard/adoptionRequest" icon={HiClipboard}>
                         Adoption Request
-                    </Sidebar.Item>
-                    <Sidebar.Item href="/dashboard/createDonationCampaign" icon={HiPencil}>
-                        Create Donation <br /> Campaign
                     </Sidebar.Item>
                     <Sidebar.Item href="/dashboard/myDonationCampaign" icon={HiClipboard}>
                         My Donation <br /> Campaigns
@@ -94,6 +88,12 @@ const Dashboard = () => {
                     </Sidebar.Item>
                     <Sidebar.Item href="/donationCampaigns" icon={HiInformationCircle}>
                         Donation Campaign
+                    </Sidebar.Item>
+                    <Sidebar.Item href="/dashboard/addPet" icon={HiShoppingBag}>
+                        Add a Pet
+                    </Sidebar.Item>
+                    <Sidebar.Item href="/dashboard/createDonationCampaign" icon={HiPencil}>
+                        Create Donation <br /> Campaign
                     </Sidebar.Item>
                     <Sidebar.Item className="text-center">
                         <Button onClick={handleSignOut}>Log Out</Button>

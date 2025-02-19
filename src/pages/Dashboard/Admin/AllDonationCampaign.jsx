@@ -84,6 +84,7 @@ const AllDonationCampaign = () => {
                         <Table.HeadCell>Maximum Donation Amount</Table.HeadCell>
                         <Table.HeadCell>Last Date to Donate (yyyy-mm-dd)</Table.HeadCell>
                         <Table.HeadCell>Campaign Created By</Table.HeadCell>
+                        <Table.HeadCell>Donation Progress Bar</Table.HeadCell>
                         <Table.HeadCell>Actions</Table.HeadCell>
                     </Table.Head>
                     <Table.Body className="divide-y">
@@ -108,6 +109,21 @@ const AllDonationCampaign = () => {
                                 <Table.Cell className="text-gray-700">{donationCampaign.maxDonationAmount} $</Table.Cell>
                                 <Table.Cell className="text-gray-700">{donationCampaign.lastDateOfDonation}</Table.Cell>
                                 <Table.Cell className="text-gray-700">{donationCampaign.createdBy}</Table.Cell>
+                                <Table.Cell className="text-gray-700">
+                                    <div className="w-full bg-gray-200 rounded-full h-4">
+                                        <div
+                                            className="bg-cyan-600 h-4 rounded-full"
+                                            style={{
+                                                width: `${donationCampaign.currentDonations ? (donationCampaign.currentDonations / donationCampaign.maxDonationAmount) * 100 : 0}%`,
+                                            }}
+                                        ></div>
+                                    </div>
+                                    <span className="text-sm font-medium text-gray-700">
+                                        {donationCampaign.currentDonations
+                                            ? `${((donationCampaign.currentDonations / donationCampaign.maxDonationAmount) * 100).toFixed(2)}%`
+                                            : "0%"}
+                                    </span>
+                                </Table.Cell>
 
                                 <Table.Cell >
                                     <div className="flex flex-col md:flex-row gap-2 items-center">

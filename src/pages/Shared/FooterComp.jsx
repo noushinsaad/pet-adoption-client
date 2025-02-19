@@ -15,7 +15,7 @@ const FooterComp = () => {
                                 href="/"
                                 src={logo}
                                 alt="FurEver Home Logo"
-                                name="FurEver Home"
+                                name="furEverHome"
                                 className="text-2xl font-semibold text-gray-700"
                             />
                         </div>

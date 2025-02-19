@@ -1,20 +1,28 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import NavBar from "../pages/Shared/NavBar";
 import FooterComp from "../pages/Shared/FooterComp";
 
-
 const Main = () => {
+    const location = useLocation();
+    const hideNavFooter = location.pathname.includes('login') || location.pathname.includes('register');
+
     return (
         <div>
-            <nav className="sticky top-0 z-50 shadow-md">
-                <NavBar></NavBar>
-            </nav>
+            {!hideNavFooter && (
+                <nav className="sticky top-0 z-50 shadow-md">
+                    <NavBar />
+                </nav>
+            )}
+
             <main className="min-h-screen">
-                <Outlet></Outlet>
+                <Outlet />
             </main>
-            <footer>
-                <FooterComp></FooterComp>
-            </footer>
+
+            {!hideNavFooter && (
+                <footer>
+                    <FooterComp />
+                </footer>
+            )}
         </div>
     );
 };

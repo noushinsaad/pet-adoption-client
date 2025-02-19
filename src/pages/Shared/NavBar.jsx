@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { Avatar, Button, Dropdown, Navbar } from "flowbite-react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import useActiveLink from "../../hooks/useActiveLink";
@@ -38,6 +39,16 @@ const NavBar = () => {
             <NavLink to="/donationCampaigns" className={useActiveLink("/donationCampaigns")}>
                 Donation Campaigns
             </NavLink>
+            {
+                user && <>
+                    <NavLink to="/addPet" className={useActiveLink("/addPet")}>
+                        Add a Pet
+                    </NavLink>
+                    <NavLink to="/createDonationCampaign" className={useActiveLink("/createDonationCampaign")}>
+                        Create Donation Campaign
+                    </NavLink>
+                </>
+            }
 
         </>
     );
@@ -47,11 +58,12 @@ const NavBar = () => {
         <Navbar className="bg-green-200  md:px-10" fluid>
             <Navbar.Brand href="/">
                 <img src={logo} className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" />
-                <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">FurEver Home</span>
+                <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">furEver Home</span>
             </Navbar.Brand>
 
             {
-                noHeaderFooter || <div className="flex md:order-2">
+                noHeaderFooter ||
+                <div className="flex md:order-2">
                     {user ? (
                         <Dropdown
                             arrowIcon={true}

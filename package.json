@@ -22,6 +22,8 @@
     "pet-adoption-client-side": "file:",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-helmet": "^6.1.0",
+    "react-helmet-async": "^2.0.5",
     "react-hook-form": "^7.54.2",
     "react-icons": "^5.4.0",
     "react-intersection-observer": "^9.15.1",

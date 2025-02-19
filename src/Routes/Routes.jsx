@@ -54,6 +54,14 @@ const Routes = createBrowserRouter([
                 element: <DonationCampaign></DonationCampaign>
             },
             {
+                path: 'addPet',
+                element: <PrivateRoutes><AddPetForm></AddPetForm></PrivateRoutes>
+            },
+            {
+                path: 'createDonationCampaign',
+                element: <PrivateRoutes><CreateDonationCampaign></CreateDonationCampaign></PrivateRoutes>
+            },
+            {
                 path: 'petDetails/:id',
                 element: <PetDetails></PetDetails>,
                 loader: ({ params }) => fetch(`https://pet-adoption-server-side-zeta.vercel.app/pets/${params.id}`)
