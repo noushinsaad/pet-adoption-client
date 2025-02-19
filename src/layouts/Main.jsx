@@ -14,7 +14,7 @@ const Main = () => {
                 </nav>
             )}
 
-            <main className="min-h-screen">
+            <main className="min-h-screen dark:bg-gray-700">
                 <Outlet />
             </main>
 

@@ -19,11 +19,11 @@ const DonationCampaign = () => {
 
     return (
         <div className="max-w-7xl mx-auto p-6">
-            <h2 className="text-4xl font-bold text-gray-800 mb-6">Donation Campaigns</h2>
+            <h2 className="text-4xl font-bold text-gray-800 dark:text-gray-300 mb-6">Donation Campaigns</h2>
 
             {/* Currently Active Section */}
             <div>
-                <h3 className="text-2xl font-semibold text-green-700 mb-4">Currently Active</h3>
+                <h3 className="text-2xl font-semibold text-green-800 dark:text-green-400 mb-4">Currently Active</h3>
                 {activeCampaigns.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {activeCampaigns.map((campaign) => (
@@ -37,7 +37,7 @@ const DonationCampaign = () => {
 
             {/* Not Active Section */}
             <div className="mt-8">
-                <h3 className="text-2xl font-semibold text-red-700 mb-4">Not Active</h3>
+                <h3 className="text-2xl font-semibold text-red-800 dark:text-red-400 mb-4">Not Active</h3>
                 {inactiveCampaigns.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {inactiveCampaigns.map((campaign) => (
@@ -45,7 +45,7 @@ const DonationCampaign = () => {
                         ))}
                     </div>
                 ) : (
-                    <p className="text-gray-500">No inactive campaigns.</p>
+                    <p className="text-gray-600 dark:text-gray-300">No inactive campaigns.</p>
                 )}
             </div>
         </div>
