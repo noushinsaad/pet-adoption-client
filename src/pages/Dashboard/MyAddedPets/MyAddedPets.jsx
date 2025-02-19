@@ -108,13 +108,13 @@ const MyAddedPets = () => {
     }
 
     return (
-        <div className="p-6">
-            <h2 className="text-4xl font-bold text-gray-800 mb-6">My Added Pets</h2>
+        <div className="p-6 dark:bg-gray-800 dark:text-white">
+            <h2 className="text-4xl font-bold text-gray-800 dark:text-white mb-6">My Added Pets</h2>
 
             {myAddedPets.length > 0 ? (
-                <div className="overflow-x-auto bg-white shadow-lg rounded-lg border border-gray-200">
-                    <table className="w-full border-collapse border border-gray-200">
-                        <thead className="bg-gray-100 text-gray-800">
+                <div className="overflow-x-auto bg-white dark:bg-gray-700 dark:border-gray-600 shadow-lg rounded-lg border border-gray-200">
+                    <table className="w-full border-collapse border border-gray-200 dark:border-gray-600">
+                        <thead className="bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-white">
                             {table.getHeaderGroups().map((headerGroup) => (
                                 <tr key={headerGroup.id} className="text-left">
                                     {headerGroup.headers.map((header) => (
@@ -134,16 +134,16 @@ const MyAddedPets = () => {
                                 </tr>
                             ))}
                         </thead>
-                        <tbody className="divide-y divide-gray-200">
+                        <tbody className="divide-y divide-gray-200 dark:divide-gray-600">
                             {table.getRowModel().rows.map((row) => (
                                 <tr
                                     key={row.id}
-                                    className="hover:bg-gray-50 transition duration-200"
+                                    className="hover:bg-gray-50 dark:hover:bg-gray-600 transition duration-200"
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <td
                                             key={cell.id}
-                                            className="p-4 text-sm text-gray-700 align-middle"
+                                            className="p-4 text-sm text-gray-700 dark:text-gray-300 align-middle"
                                         >
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </td>
@@ -155,7 +155,7 @@ const MyAddedPets = () => {
                 </div>
             ) : (
                 <div className="text-center py-12">
-                    <p className="text-lg text-gray-600">
+                    <p className="text-lg text-gray-600 dark:text-gray-300">
                         You have not listed any pets for adoption yet.
                     </p>
                     <Button
@@ -182,7 +182,9 @@ const MyAddedPets = () => {
             <Modal show={isModalOpen} onClose={() => setIsModalOpen(false)}>
                 <Modal.Header>Confirm Deletion</Modal.Header>
                 <Modal.Body>
-                    <p className="text-sm text-gray-700">Are you sure you want to delete this pet?</p>
+                    <p className="text-sm text-gray-700 dark:text-gray-300">
+                        Are you sure you want to delete this pet?
+                    </p>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={confirmDeletePet} color="failure">

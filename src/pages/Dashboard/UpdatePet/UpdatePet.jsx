@@ -1,6 +1,5 @@
 import { useForm } from "react-hook-form";
 import { Button, FileInput, Label, TextInput, Textarea } from "flowbite-react";
-// import Select from "react-select";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useEffect, useRef } from "react";
@@ -11,7 +10,6 @@ import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?&key=${image_hosting_key}`;
-
 
 const UpdatePet = () => {
     const { id } = useParams();
@@ -31,7 +29,6 @@ const UpdatePet = () => {
 
     useEffect(() => {
         const fetchPetData = async () => {
-
             const res = await axiosSecure.get(`/pets/${id}`);
             const pet = res.data;
 
@@ -42,8 +39,6 @@ const UpdatePet = () => {
             setValue("longDescription", pet.longDescription);
             setValue("petCategory", pet.category);
             setValue("photoUrl", pet.photoUrl);
-
-
         };
 
         fetchPetData();
@@ -62,10 +57,9 @@ const UpdatePet = () => {
                 },
             });
             if (res.data.success) {
-                petPicture = res.data.data.display_url; 
+                petPicture = res.data.data.display_url;
             }
         }
-
 
         const updatedPetInfo = {
             age: data.petAge,
@@ -95,12 +89,11 @@ const UpdatePet = () => {
                 text: `Failed to update pet information ${error}.`,
             });
         }
-
     };
 
     return (
-        <div className="max-w-4xl mx-auto p-8 bg-gray-50 shadow-lg rounded-lg">
-            <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
+        <div className="max-w-4xl mx-auto p-8 bg-gray-50 dark:bg-gray-900 shadow-lg rounded-lg">
+            <h2 className="text-3xl font-bold text-center text-gray-800 dark:text-gray-300 mb-6">
                 Update Pet Information
             </h2>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -117,7 +110,7 @@ const UpdatePet = () => {
                     <Label htmlFor="petImage" value="Pet Image" />
                     {watch("photoUrl") ? (
                         <div className="mb-2">
-                            <p className="text-gray-700 text-sm">Current File: {watch("photoUrl").split('/').pop()}</p>
+                            <p className="text-gray-700 dark:text-gray-400 text-sm">Current File: {watch("photoUrl").split('/').pop()}</p>
                         </div>
                     ) : null}
                     <FileInput
@@ -143,7 +136,6 @@ const UpdatePet = () => {
                     )}
                 </div>
 
-
                 {/* Pet Name */}
                 <div>
                     <Label value="Pet Name" />
@@ -151,7 +143,7 @@ const UpdatePet = () => {
                         value={watch("petName")}
                         readOnly
                         shadow
-                        className="bg-gray-100"
+                        className="bg-gray-100 dark:bg-gray-700"
                     />
                 </div>
 
@@ -162,7 +154,7 @@ const UpdatePet = () => {
                         value={watch("petCategory")}
                         readOnly
                         shadow
-                        className="bg-gray-100"
+                        className="bg-gray-100 dark:bg-gray-700"
                     />
                 </div>
 

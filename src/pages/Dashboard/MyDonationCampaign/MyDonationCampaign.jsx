@@ -71,22 +71,24 @@ const MyDonationCampaign = () => {
     }
 
     return (
-        <div className="p-6">
-            <h2 className="text-4xl font-bold text-gray-800 mb-6">My Donation Campaign</h2>
-            {donationCampaigns.length > 0 ?
-                <div className="overflow-x-auto bg-white shadow-lg rounded-lg border border-gray-200">
+        <div className="p-6 dark:bg-gray-800 dark:text-white">
+            <h2 className="text-4xl font-bold text-gray-800 dark:text-white mb-6">
+                My Donation Campaign
+            </h2>
+            {donationCampaigns.length > 0 ? (
+                <div className="overflow-x-auto bg-white dark:bg-gray-700 shadow-lg rounded-lg border border-gray-200 dark:border-gray-600">
                     <Table striped>
-                        <Table.Head className="bg-gray-100">
-                            <Table.HeadCell>#</Table.HeadCell>
-                            <Table.HeadCell>Donation For</Table.HeadCell>
-                            <Table.HeadCell>Maximum Donation Amount</Table.HeadCell>
-                            <Table.HeadCell>Donation Progress Bar</Table.HeadCell>
-                            <Table.HeadCell>Actions</Table.HeadCell>
+                        <Table.Head className="bg-gray-100 dark:bg-gray-800">
+                            <Table.HeadCell className="text-gray-800 dark:text-white">#</Table.HeadCell>
+                            <Table.HeadCell className="text-gray-800 dark:text-white">Donation For</Table.HeadCell>
+                            <Table.HeadCell className="text-gray-800 dark:text-white">Maximum Donation Amount</Table.HeadCell>
+                            <Table.HeadCell className="text-gray-800 dark:text-white">Donation Progress Bar</Table.HeadCell>
+                            <Table.HeadCell className="text-gray-800 dark:text-white">Actions</Table.HeadCell>
                         </Table.Head>
-                        <Table.Body className="divide-y">
+                        <Table.Body className="divide-y dark:divide-gray-600">
                             {donationCampaigns.map((campaign, idx) => (
-                                <Table.Row key={campaign._id} className="hover:bg-gray-50 transition duration-200">
-                                    <Table.Cell className="font-medium text-gray-900">{idx + 1}</Table.Cell>
+                                <Table.Row key={campaign._id} className="hover:bg-gray-50 dark:hover:bg-gray-600 transition duration-200">
+                                    <Table.Cell className="font-medium text-gray-900 dark:text-gray-300">{idx + 1}</Table.Cell>
                                     <Table.Cell>
                                         <div className="h-12 w-12">
                                             <img
@@ -95,14 +97,16 @@ const MyDonationCampaign = () => {
                                                 alt={campaign.petName}
                                             />
                                         </div>
-                                        <p className="text-gray-700">
+                                        <p className="text-gray-700 dark:text-gray-300">
                                             <span className="font-semibold">Name: </span>
                                             {campaign.petName}
                                         </p>
                                     </Table.Cell>
-                                    <Table.Cell className="text-gray-700">{campaign.maxDonationAmount} $</Table.Cell>
-                                    <Table.Cell className="text-gray-700">
-                                        <div className="w-full bg-gray-200 rounded-full h-4">
+                                    <Table.Cell className="text-gray-700 dark:text-gray-300">
+                                        {campaign.maxDonationAmount} $
+                                    </Table.Cell>
+                                    <Table.Cell className="text-gray-700 dark:text-gray-300">
+                                        <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-4">
                                             <div
                                                 className="bg-cyan-600 h-4 rounded-full"
                                                 style={{
@@ -110,7 +114,7 @@ const MyDonationCampaign = () => {
                                                 }}
                                             ></div>
                                         </div>
-                                        <span className="text-sm font-medium text-gray-700">
+                                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                                             {campaign.currentDonations
                                                 ? `${((campaign.currentDonations / campaign.maxDonationAmount) * 100).toFixed(2)}%`
                                                 : "0%"}
@@ -143,9 +147,10 @@ const MyDonationCampaign = () => {
                             ))}
                         </Table.Body>
                     </Table>
-                </div> :
+                </div>
+            ) : (
                 <div className="text-center py-12">
-                    <p className="text-lg text-gray-600">
+                    <p className="text-lg text-gray-600 dark:text-gray-300">
                         You have not created any campaign for donation yet.
                     </p>
                     <Button
@@ -155,7 +160,7 @@ const MyDonationCampaign = () => {
                         Create a Donation Campaign
                     </Button>
                 </div>
-            }
+            )}
 
             {/* Donators Modal */}
             <ShowDonatorsModal

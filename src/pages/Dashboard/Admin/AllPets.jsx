@@ -4,7 +4,6 @@ import Swal from "sweetalert2";
 import usePetsData from "../../../hooks/usePetsData";
 import { Link } from "react-router-dom";
 
-
 const AllPets = () => {
     const axiosSecure = useAxiosSecure();
     const { allPets, refetch } = usePetsData();
@@ -12,9 +11,9 @@ const AllPets = () => {
     const handleChangeAdoptionStatus = async (pet) => {
         await axiosSecure.patch(`/pets/${pet._id}`, { adopt: pet.adopted });
         refetch();
-    }
+    };
 
-    const handleDeletePet = pet => {
+    const handleDeletePet = (pet) => {
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -22,46 +21,44 @@ const AllPets = () => {
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!"
+            confirmButtonText: "Yes, delete it!",
         }).then(async (result) => {
             if (result.isConfirmed) {
-                // console.log(result)
-                const res = await axiosSecure.delete(`/pets/${pet._id}`)
+                const res = await axiosSecure.delete(`/pets/${pet._id}`);
                 if (res.data.deletedCount > 0) {
-                    console.log(res.data)
-                    refetch()
+                    refetch();
                     Swal.fire({
                         title: "Deleted!",
                         text: `${pet.petName} has been removed from adoption.`,
-                        icon: "success"
+                        icon: "success",
                     });
                 }
             }
-        })
-    }
+        });
+    };
 
     return (
-        <div className="p-6">
-            <h2 className="text-4xl font-bold text-gray-800 mb-6">All Pets</h2>
-            <div className="overflow-x-auto bg-white shadow-lg rounded-lg border border-gray-200">
+        <div className="p-6 bg-gray-50 dark:bg-gray-900 min-h-screen rounded-lg">
+            <h2 className="text-4xl font-bold text-gray-800 dark:text-gray-200 mb-6">All Pets</h2>
+            <div className="overflow-x-auto bg-white dark:bg-gray-800 shadow-lg rounded-lg border border-gray-200 dark:border-gray-700">
                 <Table striped>
-                    <Table.Head className="bg-gray-100">
-                        <Table.HeadCell>#</Table.HeadCell>
-                        <Table.HeadCell>Profile Picture</Table.HeadCell>
-                        <Table.HeadCell>Name</Table.HeadCell>
-                        <Table.HeadCell>Age</Table.HeadCell>
-                        <Table.HeadCell>Category</Table.HeadCell>
-                        <Table.HeadCell>Added By</Table.HeadCell>
-                        <Table.HeadCell>Adoption Status</Table.HeadCell>
-                        <Table.HeadCell>Actions</Table.HeadCell>
+                    <Table.Head className="bg-gray-100 dark:bg-gray-700">
+                        <Table.HeadCell className="text-gray-800 dark:text-gray-100">#</Table.HeadCell>
+                        <Table.HeadCell className="text-gray-800 dark:text-gray-100">Profile Picture</Table.HeadCell>
+                        <Table.HeadCell className="text-gray-800 dark:text-gray-100">Name</Table.HeadCell>
+                        <Table.HeadCell className="text-gray-800 dark:text-gray-100">Age</Table.HeadCell>
+                        <Table.HeadCell className="text-gray-800 dark:text-gray-100">Category</Table.HeadCell>
+                        <Table.HeadCell className="text-gray-800 dark:text-gray-100">Added By</Table.HeadCell>
+                        <Table.HeadCell className="text-gray-800 dark:text-gray-100">Adoption Status</Table.HeadCell>
+                        <Table.HeadCell className="text-gray-800 dark:text-gray-100">Actions</Table.HeadCell>
                     </Table.Head>
-                    <Table.Body className="divide-y">
+                    <Table.Body className="divide-y dark:divide-gray-600">
                         {allPets.map((pet, idx) => (
                             <Table.Row
                                 key={pet._id}
-                                className="hover:bg-gray-50 transition duration-200"
+                                className="hover:bg-gray-50 dark:hover:bg-gray-700 transition duration-200"
                             >
-                                <Table.Cell className="font-medium text-gray-900">
+                                <Table.Cell className="font-medium text-gray-900 dark:text-gray-200">
                                     {idx + 1}
                                 </Table.Cell>
                                 <Table.Cell>
@@ -73,42 +70,41 @@ const AllPets = () => {
                                         />
                                     </div>
                                 </Table.Cell>
-                                <Table.Cell className="text-gray-700">{pet.name}</Table.Cell>
-                                <Table.Cell className="text-gray-700">{pet.age}</Table.Cell>
-                                <Table.Cell className="text-gray-700">{pet.category}</Table.Cell>
-                                <Table.Cell className="text-gray-700">{pet.addedBy}</Table.Cell>
-                                <Table.Cell className="text-gray-700">
-
+                                <Table.Cell className="text-gray-700 dark:text-gray-300">{pet.name}</Table.Cell>
+                                <Table.Cell className="text-gray-700 dark:text-gray-300">{pet.age}</Table.Cell>
+                                <Table.Cell className="text-gray-700 dark:text-gray-300">{pet.category}</Table.Cell>
+                                <Table.Cell className="text-gray-700 dark:text-gray-300">{pet.addedBy}</Table.Cell>
+                                <Table.Cell>
                                     <Button
                                         size="xs"
                                         onClick={() => handleChangeAdoptionStatus(pet)}
-                                        className="bg-cyan-600 hover:bg-cyan-700 text-white"
+                                        className={`${pet.adopted
+                                                ? "bg-green-600 dark:bg-green-700 hover:bg-green-700 dark:hover:bg-green-800"
+                                                : "bg-yellow-500 dark:bg-yellow-600 hover:bg-yellow-600 dark:hover:bg-yellow-700"
+                                            } text-white transition`}
                                     >
                                         {pet.adopted ? "Adopted" : "Not Adopted"}
                                     </Button>
-
                                 </Table.Cell>
-                                <Table.Cell >
+                                <Table.Cell>
                                     <div className="flex flex-col md:flex-row gap-2 items-center">
                                         <Button
                                             size="xs"
                                             onClick={() => handleDeletePet(pet)}
-                                            className="bg-red-600 text-white"
+                                            className="bg-red-600 dark:bg-red-700 hover:bg-red-700 dark:hover:bg-red-800 text-white"
                                         >
                                             Delete
                                         </Button>
                                         <Link to={`/dashboard/updatePet/${pet._id}`}>
                                             <Button
                                                 size="xs"
-                                                // onClick={() => handleMakeAdmin(user)}
-                                                className="bg-cyan-600 hover:bg-cyan-700 text-white"
+                                                className="bg-cyan-600 dark:bg-cyan-700 hover:bg-cyan-700 dark:hover:bg-cyan-800 text-white"
                                             >
                                                 Update
                                             </Button>
                                         </Link>
                                     </div>
                                 </Table.Cell>
-
                             </Table.Row>
                         ))}
                     </Table.Body>

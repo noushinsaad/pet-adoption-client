@@ -6,7 +6,6 @@ import Swal from "sweetalert2";
 const AllUsers = () => {
     const axiosSecure = useAxiosSecure();
 
-
     const { data: users = [], refetch } = useQuery({
         queryKey: ["users"],
         queryFn: async () => {
@@ -14,7 +13,6 @@ const AllUsers = () => {
             return res.data;
         },
     });
-
 
     const handleMakeAdmin = (user) => {
         Swal.fire({
@@ -48,24 +46,26 @@ const AllUsers = () => {
     };
 
     return (
-        <div className="p-6">
-            <h2 className="text-4xl font-bold text-gray-800 mb-6">All Users</h2>
-            <div className="overflow-x-auto bg-white shadow-lg rounded-lg border border-gray-200">
+        <div className="p-6 bg-gray-50 dark:bg-gray-900 min-h-screen rounded-lg">
+            <h2 className="text-4xl font-bold text-gray-800 dark:text-gray-200 mb-6">
+                All Users
+            </h2>
+            <div className="overflow-x-auto bg-white dark:bg-gray-800 shadow-lg rounded-lg border border-gray-200 dark:border-gray-700">
                 <Table striped>
-                    <Table.Head className="bg-gray-100">
-                        <Table.HeadCell>#</Table.HeadCell>
-                        <Table.HeadCell>Profile Picture</Table.HeadCell>
-                        <Table.HeadCell>Name</Table.HeadCell>
-                        <Table.HeadCell>Email</Table.HeadCell>
-                        <Table.HeadCell>Actions</Table.HeadCell>
+                    <Table.Head className="bg-gray-100 dark:bg-gray-700">
+                        <Table.HeadCell className="text-gray-800 dark:text-gray-100">#</Table.HeadCell>
+                        <Table.HeadCell className="text-gray-800 dark:text-gray-100">Profile Picture</Table.HeadCell>
+                        <Table.HeadCell className="text-gray-800 dark:text-gray-100">Name</Table.HeadCell>
+                        <Table.HeadCell className="text-gray-800 dark:text-gray-100">Email</Table.HeadCell>
+                        <Table.HeadCell className="text-gray-800 dark:text-gray-100">Actions</Table.HeadCell>
                     </Table.Head>
-                    <Table.Body className="divide-y">
+                    <Table.Body className="divide-y dark:divide-gray-600">
                         {users.map((user, idx) => (
                             <Table.Row
                                 key={user._id}
-                                className="hover:bg-gray-50 transition duration-200"
+                                className="hover:bg-gray-50 dark:hover:bg-gray-700 transition duration-200"
                             >
-                                <Table.Cell className="font-medium text-gray-900">
+                                <Table.Cell className="font-medium text-gray-900 dark:text-gray-200">
                                     {idx + 1}
                                 </Table.Cell>
                                 <Table.Cell>
@@ -77,16 +77,16 @@ const AllUsers = () => {
                                         />
                                     </div>
                                 </Table.Cell>
-                                <Table.Cell className="text-gray-700">{user.name}</Table.Cell>
-                                <Table.Cell className="text-gray-700">{user.email}</Table.Cell>
+                                <Table.Cell className="text-gray-700 dark:text-gray-300">{user.name}</Table.Cell>
+                                <Table.Cell className="text-gray-700 dark:text-gray-300">{user.email}</Table.Cell>
                                 <Table.Cell>
                                     {user.role === "admin" ? (
-                                        "Admin"
+                                        <span className="text-green-600 dark:text-green-400 font-semibold">Admin</span>
                                     ) : (
                                         <Button
                                             size="xs"
                                             onClick={() => handleMakeAdmin(user)}
-                                            className="bg-cyan-600 hover:bg-cyan-700 text-white"
+                                            className="bg-cyan-600 dark:bg-cyan-700 hover:bg-cyan-700 dark:hover:bg-cyan-800 text-white"
                                         >
                                             Make Admin
                                         </Button>

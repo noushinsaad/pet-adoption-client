@@ -5,46 +5,53 @@ import RequestAdoptionModal from "../../../components/RequestAdoptionModal";
 import Skeleton from "react-loading-skeleton";
 import 'react-loading-skeleton/dist/skeleton.css';
 
-
-
-
 const AdoptionRequest = () => {
     const { petsWithRequests, isLoading } = useMyPetsWithRequests();
 
     const [selectedPet, setSelectedPet] = useState(null);
-
     const [showModal, setShowModal] = useState(false);
 
-    // console.log(petsWithRequests)
-
     const handleViewRequests = (pet) => {
-        setSelectedPet(pet)
+        setSelectedPet(pet);
         setShowModal(true);
     };
 
-
-
     if (isLoading) {
-        return (<div className="p-6">
-            <Skeleton height={40} width={300} count={3} />
-        </div>)
+        return (
+            <div className="p-6">
+                <Skeleton height={40} width={300} count={3} />
+            </div>
+        );
     }
 
     return (
-        <div className="p-6">
-            <h2 className="text-4xl font-bold text-gray-800 mb-6">Adoption Requests Received</h2>
-            <div className="overflow-x-auto bg-white shadow-lg rounded-lg border border-gray-200">
+        <div className="p-6 dark:bg-gray-800 dark:text-white">
+            <h2 className="text-4xl font-bold text-gray-800 dark:text-white mb-6">
+                Adoption Requests Received
+            </h2>
+            <div className="overflow-x-auto bg-white dark:bg-gray-700 shadow-lg rounded-lg border border-gray-200 dark:border-gray-600">
                 <Table striped>
-                    <Table.Head className="bg-gray-100">
-                        <Table.HeadCell>#</Table.HeadCell>
-                        <Table.HeadCell>Pet Information</Table.HeadCell>
-                        <Table.HeadCell>Requests Received</Table.HeadCell>
-                        <Table.HeadCell>Actions</Table.HeadCell>
+                    <Table.Head className="bg-gray-100 dark:bg-gray-800">
+                        <Table.HeadCell className="text-gray-800 dark:text-white">
+                            #
+                        </Table.HeadCell>
+                        <Table.HeadCell className="text-gray-800 dark:text-white">
+                            Pet Information
+                        </Table.HeadCell>
+                        <Table.HeadCell className="text-gray-800 dark:text-white">
+                            Requests Received
+                        </Table.HeadCell>
+                        <Table.HeadCell className="text-gray-800 dark:text-white">
+                            Actions
+                        </Table.HeadCell>
                     </Table.Head>
-                    <Table.Body className="divide-y">
+                    <Table.Body className="divide-y dark:divide-gray-600">
                         {petsWithRequests.map((pet, idx) => (
-                            <Table.Row key={pet._id} className="hover:bg-gray-50 transition duration-200">
-                                <Table.Cell className="font-medium text-gray-900">
+                            <Table.Row
+                                key={pet._id}
+                                className="hover:bg-gray-50 dark:hover:bg-gray-600 transition duration-200"
+                            >
+                                <Table.Cell className="font-medium text-gray-900 dark:text-gray-300">
                                     {idx + 1}
                                 </Table.Cell>
                                 <Table.Cell>
@@ -55,13 +62,17 @@ const AdoptionRequest = () => {
                                             alt={pet.name}
                                         />
                                         <div>
-                                            <p className="text-gray-700 font-semibold">{pet.name}</p>
-                                            <p className="text-sm text-gray-500">{pet.category}</p>
+                                            <p className="text-gray-700 dark:text-gray-300 font-semibold">
+                                                {pet.name}
+                                            </p>
+                                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                                                {pet.category}
+                                            </p>
                                         </div>
                                     </div>
                                 </Table.Cell>
                                 <Table.Cell>
-                                    <p className="text-gray-700 font-semibold">
+                                    <p className="text-gray-700 dark:text-gray-300 font-semibold">
                                         {pet.requestCount} request(s)
                                     </p>
                                 </Table.Cell>
@@ -80,11 +91,13 @@ const AdoptionRequest = () => {
                 </Table>
             </div>
 
-            {selectedPet && <RequestAdoptionModal
-                showModal={showModal}
-                onClose={() => setShowModal(false)}
-                selectedPet={selectedPet}
-            />}
+            {selectedPet && (
+                <RequestAdoptionModal
+                    showModal={showModal}
+                    onClose={() => setShowModal(false)}
+                    selectedPet={selectedPet}
+                />
+            )}
         </div>
     );
 };
