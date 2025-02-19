@@ -19,6 +19,7 @@
     "flowbite-react": "^0.10.2",
     "localforage": "^1.10.0",
     "match-sorter": "^8.0.0",
+    "motion": "^12.4.4",
     "pet-adoption-client-side": "file:",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
