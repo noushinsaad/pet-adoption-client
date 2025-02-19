@@ -7,7 +7,7 @@ import logo from '../../assets/logo.png'
 import useAuth from "../../hooks/useAuth";
 import Swal from "sweetalert2";
 import useAdmin from "../../hooks/useAdmin";
-import useDarkMode from "../../hooks/useDarkMode";  
+import { useDarkModeContext } from "../../providers/DarkModeProvider";
 
 const NavBar = () => {
     const { user, logOut } = useAuth();
@@ -16,7 +16,7 @@ const NavBar = () => {
     const noHeaderFooter = location.pathname.includes('login') || location.pathname.includes('register');
 
 
-    const [darkMode, toggleDarkMode] = useDarkMode();
+    const { darkMode, toggleDarkMode } = useDarkModeContext();
 
     const handleSignOut = () => {
         logOut()
@@ -56,8 +56,9 @@ const NavBar = () => {
         </>
     );
 
+
     return (
-        <Navbar className={`md:px-10 ${darkMode ? 'bg-gray-900 text-white' : 'bg-green-200'}`} fluid>
+        <Navbar className="md:px-10 dark:bg-gray-900 dark:text-white bg-green-200" fluid>
             <Navbar.Brand href="/">
                 <img src={logo} className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" />
                 <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">furEver Home</span>
@@ -93,7 +94,7 @@ const NavBar = () => {
                         onClick={toggleDarkMode}
                         className="ml-4 p-3 bg-green-600 text-white rounded-full shadow-md hover:bg-green-700 transition duration-300"
                     >
-                        {darkMode ? "🌙" : "🌞"}
+                        {darkMode==="light" ? "🌙" : "🌞"}
                     </button>
                     <Navbar.Toggle />
                 </div>
